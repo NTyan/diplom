@@ -1,0 +1,48 @@
+version: '3.3'
+
+services:
+    nginx:
+        image: nginx
+        container_name: nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./nginx/conf:/etc/nginx/conf.d
+            - ./../:/var/www/app
+            - ./nginx/logs:/var/log/nginx/
+        links:
+            - php
+        networks:
+            - backend
+    mysql:
+        container_name: mysql
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: diplom
+        ports:
+        - 3306:3306
+        volumes:
+            - ./mysql/db:/var/lib/mysql
+            - ./mysql/conf:/etc/mysql/conf.d/custom.cnf
+        networks:
+            - backend
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    php:
+        build: php
+        container_name: php
+        volumes:
+            - ./php/php.ini:/usr/local/etc/php/php.ini
+            - ./../:/var/www/app
+        links:
+            - mysql
+        networks:
+            - backend
+    nodejs:
+        image: wiwatsrt/docker-laravel-nodejs
+        volumes:
+            - ./../:/var/www
+networks:
+    backend:
