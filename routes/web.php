@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,6 +18,7 @@ Route::get('/', function () {
 
 Route::get('/profile', function () {
     return view('lk.profile');
-})->middleware('verified')->name('profile');
+})->middleware('auth')->name('profile');
 
 require __DIR__.'/auth.php';
+require __DIR__.'/lk.php';

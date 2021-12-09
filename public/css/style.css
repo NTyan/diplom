@@ -1,0 +1,6 @@
+.color{
+    filter: invert(68%) sepia(98%) saturate(209%) hue-rotate(203deg) brightness(105%) contrast(101%);
+}
+.color:hover {
+    filter: invert(45%) sepia(17%) saturate(1439%) hue-rotate(201deg) brightness(88%) contrast(83%);
+}

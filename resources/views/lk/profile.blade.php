@@ -10,16 +10,20 @@
             </div>
         </div>
         <div class="d-flex justify-content-between my-5">
-            <div class="btn card w-100 mr-3">
-                <div class="card-body">
-                    <h4 class="card-title">Мои заказы</h4>
+            <a href="{{ route('orders') }}" class="btn w-100 p-0 mr-3">
+                <div class="card ">
+                    <div class="card-body">
+                        <h4 class="card-title">Мои заказы</h4>
+                    </div>
                 </div>
-            </div>
-            <div class="btn card w-100 ml-3">
-                <div class="card-body">
-                    <h4 class="card-title">Для бизнеса</h4>
+            </a>
+            <a href="{{ route('orgs') }}" class="btn w-100 p-0 ml-3">
+                <div class="card ">
+                    <div class="card-body">
+                        <h4 class="card-title">Для бизнеса</h4>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </x-app-layout>
