@@ -18,11 +18,12 @@ class CreateOrdersTable extends Migration
             $table->char('number', 8)->unique('orders_number_uindex');
             $table->unsignedBigInteger('user_id')->nullable()->index('orders_users_id_fk');
             $table->unsignedBigInteger('organization_id')->nullable()->index('orders_organizations_id_fk');
-            $table->dateTime('create_at')->useCurrent();
-            $table->dateTime('update_at')->useCurrent();
-            $table->enum('status', ['processing', 'confirmed', 'transit', 'canceled', 'completed']);
+            $table->dateTime('created_at')->useCurrent();
+            $table->dateTime('updated_at')->useCurrent();
+            $table->enum('status', ['processing', 'confirmed', 'transit', 'canceled', 'completed'])->nullable();
             $table->boolean('is_paid')->nullable();
             $table->integer('sum')->nullable();
+            $table->text('comment')->nullable();
         });
     }
 

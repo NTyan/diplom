@@ -14,7 +14,7 @@ class CreateOrganizationsTable extends Migration
     public function up()
     {
         Schema::create('organizations', function (Blueprint $table) {
-            $table->bigIncrements('id')->unique('organizations_id_uindex');
+            $table->bigIncrements('id');
             $table->char('name');
             $table->enum('type', ['ip', 'jur']);
             $table->char('jur_address')->nullable();
@@ -24,6 +24,9 @@ class CreateOrganizationsTable extends Migration
             $table->char('payment_account', 20)->nullable();
             $table->unsignedBigInteger('user_id')->index('organizations_users_id_fk');
             $table->softDeletes();
+            $table->char('description')->nullable();
+            $table->char('email', 25)->nullable();
+            $table->char('phone_number', 11)->nullable();
         });
     }
 

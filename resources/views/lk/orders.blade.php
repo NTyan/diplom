@@ -5,71 +5,107 @@
 
             <section class="jumbotron text-center">
                 <div class="container">
-                    <h1 class="jumbotron-heading">Мои заказы</h1>
-                    <p class="lead text-muted">На этой странице вы можете посмотреть свои заказы</p>
-                    <p>
-                        <a href="#" class="btn btn-primary my-2">Создать заказ</a>
-                        <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-                    </p>
+                    @isset($org)
+                        <h1 class="jumbotron-heading">Заказы организации</h1>
+                        <p class="lead text-muted">На этой странице вы можете посмотреть заказы своей организации</p>
+                    @endisset
+                    @empty($org)
+                        <h1 class="jumbotron-heading">Мои заказы</h1>
+                        <p class="lead text-muted">На этой странице вы можете посмотреть свои заказы</p>
+                        <p>
+                            <a href="{{url('/show-page')}}" class="btn btn-primary my-2">Создать заказ</a>
+                            <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+                        </p>
+                    @endempty
                 </div>
             </section>
 
-            <div class="album py-5 bg-light">
-                <div class="container">
-                    <div class="row">
+            <table class="table table-hover table_sort" >
+                <thead class="thead-dark cursor-pointer">
+                <tr>
+                    <th>#</th>
+                    <th>Номер заказа</th>
+                    <th>Статус</th>
+                    <th>Дата</th>
+                    <th>Сумма</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($orders as $key => $order)
+                        <tr>
+                            <th scope="row">{{$key +1}}</th>
+                            <td>
+                                <a class="btn btn-outline-dark" href="{{url('/orders/' . $order->id)}}">
+                                {{$order->number}}
+                                </a>
+                            </td>
+                            <td>
+                                @isset($order->status)
+                                    @switch($order->status)
 
-                        @foreach($orders as $order)
-                            <div class="col-md-4">
-                                <div class="card mb-4 box-shadow">
-                                    <div class="card-body">
-                                        <h4>Номер заказа: {{$order->number}}</h4>
-                                        <dl>
-                                            <dt>Дата: </dt>
-                                            <dd>{{$order->create_at}}</dd>
+                                        @case('processing')
+                                        <span class="badge badge-primary">
+                                        @break
 
-                                            <dt>Сумма:</dt>
-                                            <dd>{{$order->sum}}</dd>
-                                        </dl>
-                                        <div class="d-flex justify-content-between align-items-center">
+                                            @case('canceled')
+                                        <span class="badge badge-danger">
+                                        @break
 
-                                            <div class="btn-group">
-                                                <a class="btn btn-sm btn-outline-secondary" href="/orders/{{$order->id}}">Просмотр</a>
-                                            </div>
-                                            @switch($order->status)
-                                                @case('processing')
-                                                    <small class="text-primary">
-                                                @break
+                                            @case('confirmed')
+                                        <span class="badge badge-warning">
+                                        @break
 
-                                                @case('canceled')
-                                                    <small class="text-danger">
-                                                @break
+                                            @case('completed')
+                                        <span class="badge badge-success">
+                                        @break
 
-                                                @case('confirmed')
-                                                    <small class="text-warning">
-                                                @break
+                                            @case('transit')
+                                        <span class="badge badge-info">
+                                        @break
 
-                                                @case('completed')
-                                                    <small class="text-success">
-                                                @break
-
-                                                @case('transit')
-                                                    <small class="text-info">
-                                                @break
-
-                                                @default
-                                                    <small class="text-secondary">
-                                            @endswitch
-                                            {{$order->status}}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-
-                    </div>
-                </div>
-            </div>
-
+                                            @default
+                                        <span class="badge badge-secondary">
+                                    @endswitch
+                                            {{App\Models\Order::STATUS[$order->status]}}</span>
+                                        @endisset
+                            </td>
+                            <td>{{$order->created_at}}</td>
+                            <td>
+                                @if($order->is_paid)
+                                    <i class="bi bi-credit-card-2-front-fill text-success"></i>
+                                @else
+                                    <i class="bi bi-credit-card-2-front-fill text-danger"></i>
+                                @endif
+                                {{number_format($order->sum)}}р.
+                            </td>
+                        </tr>
+                @endforeach
+                </tbody>
+            </table>
         </main>
     </div>
 </x-app-layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const getSort = ({ target }) => {
+            const order = (target.dataset.order = -(target.dataset.order || -1));
+            const index = [...target.parentNode.cells].indexOf(target);
+            const collator = new Intl.Collator(['en', 'ru'], { numeric: true });
+            const comparator = (index, order) => (a, b) => order * collator.compare(
+                a.children[index].innerHTML,
+                b.children[index].innerHTML
+            );
+
+            for(const tBody of target.closest('table').tBodies)
+                tBody.append(...[...tBody.rows].sort(comparator(index, order)));
+
+            for(const cell of target.parentNode.cells)
+                cell.classList.toggle('sorted', cell === target);
+        };
+
+        document.querySelectorAll('.table_sort thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
+
+    });
+</script>

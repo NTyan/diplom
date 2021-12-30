@@ -14,7 +14,7 @@ class CreateOrderModelsTable extends Migration
     public function up()
     {
         Schema::create('order_models', function (Blueprint $table) {
-            $table->increments('id')->unique('order_models_id_uindex');
+            $table->increments('id');
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
             $table->integer('volume')->nullable();
@@ -24,6 +24,8 @@ class CreateOrderModelsTable extends Migration
             $table->unsignedBigInteger('order_id')->nullable()->index('order_models_orders_id_fk');
             $table->integer('count')->nullable();
             $table->integer('price')->nullable();
+            $table->char('title', 30)->nullable();
+            $table->integer('length')->nullable();
         });
     }
 

@@ -41,6 +41,19 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $dates = ['deleted_at'];
 
+
+    public function getOrganizations(): array
+    {
+        return $this->organizations;
+    }
+
+    public function getOrders(): array
+    {
+        return $this->orders;
+    }
+
+
+
     /**
      * The attributes that should be cast.
      *

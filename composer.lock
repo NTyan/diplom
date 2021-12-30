@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "deacb9a8c462c1687076dac4920de151",
+    "content-hash": "433bb0ec3a4b8baaeaabb65acec6c648",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -121,6 +121,59 @@
                 }
             ],
             "time": "2021-08-15T20:50:18+00:00"
+        },
+        {
+            "name": "chubv/php-stl",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ChubV/php-stl.git",
+                "reference": "afe1c9ffb51bef2f82bcba2936c9b36d2eaf0fc8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ChubV/php-stl/zipball/afe1c9ffb51bef2f82bcba2936c9b36d2eaf0fc8",
+                "reference": "afe1c9ffb51bef2f82bcba2936c9b36d2eaf0fc8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "nexusphp/tachycardia": "^1.0",
+                "php-coveralls/php-coveralls": "^2.4",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPSTL\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vladimir Chub",
+                    "email": "v@chub.com.ua",
+                    "homepage": "http://github.com/ChubV/"
+                }
+            ],
+            "description": "Library to parse STL file and get some statistics of the model",
+            "homepage": "http://github.com/ChubV/php-stl",
+            "keywords": [
+                "3d",
+                "stl",
+                "volume"
+            ],
+            "support": {
+                "issues": "https://github.com/ChubV/php-stl/issues",
+                "source": "https://github.com/ChubV/php-stl/tree/v2.1.0"
+            },
+            "time": "2021-05-06T20:17:49+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -8842,7 +8895,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3|^8.0"
+        "php": "^7.3|^8.0",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"

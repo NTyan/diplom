@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property User $user
  * @property Order[] $orders
  * @property Price[] $prices
+ * @method static find($executor_id)
  */
 class Organization extends Model
 {
@@ -37,7 +38,7 @@ class Organization extends Model
      * @var string
      */
     protected $keyType = 'integer';
-
+    public $timestamps = false;
     /**
      * @var array
      */
@@ -67,5 +68,121 @@ class Organization extends Model
     {
         return $this->hasMany('App\Models\Price');
     }
+
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(int $user_id): Organization
+    {
+        $this->user_id = $user_id;
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): Organization
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): Organization
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    public function getJurAddress(): string
+    {
+        return $this->jur_address;
+    }
+
+    public function setJurAddress(string $jur_address): Organization
+    {
+        $this->jur_address = $jur_address;
+        return $this;
+    }
+
+    public function getInn(): string
+    {
+        return $this->inn;
+    }
+
+    public function setInn(string $inn): Organization
+    {
+        $this->inn = $inn;
+        return $this;
+    }
+
+    public function getKpp(): string
+    {
+        return $this->kpp;
+    }
+
+    public function setKpp(string $kpp): Organization
+    {
+        $this->kpp = $kpp;
+        return $this;
+    }
+
+    public function getOgrn(): string
+    {
+        return $this->ogrn;
+    }
+
+    public function setOgrn(string $ogrn): Organization
+    {
+        $this->ogrn = $ogrn;
+        return $this;
+    }
+
+    public function getPaymentAccount(): string
+    {
+        return $this->payment_account;
+    }
+
+    public function setPaymentAccount(string $payment_account): Organization
+    {
+        $this->payment_account = $payment_account;
+        return $this;
+    }
+
+    public function getDeletedAt(): string
+    {
+        return $this->deleted_at;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getOrders(): array
+    {
+        return $this->orders;
+    }
+
+
+    public function getPrices(): array
+    {
+        return $this->prices;
+    }
+
 
 }
