@@ -6,7 +6,7 @@
             <section class="jumbotron text-center">
                 <div class="container">
                     @isset($org)
-                        <h1 class="jumbotron-heading">Заказы организации</h1>
+                        <h1 class="jumbotron-heading">Заказы {{$org->name}}</h1>
                         <p class="lead text-muted">На этой странице вы можете посмотреть заказы своей организации</p>
                     @endisset
                     @empty($org)
@@ -35,7 +35,7 @@
                         <tr>
                             <th scope="row">{{$key +1}}</th>
                             <td>
-                                <a class="btn btn-outline-dark" href="{{url('/orders/' . $order->id)}}">
+                                <a class="btn btn-outline-dark" href="{{url('/orders/' . $order->id . '/' . $role)}}">
                                 {{$order->number}}
                                 </a>
                             </td>

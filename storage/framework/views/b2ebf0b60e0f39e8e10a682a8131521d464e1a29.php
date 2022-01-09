@@ -11,7 +11,7 @@
             <section class="jumbotron text-center">
                 <div class="container">
                     <?php if(isset($org)): ?>
-                        <h1 class="jumbotron-heading">Заказы организации</h1>
+                        <h1 class="jumbotron-heading">Заказы <?php echo e($org->name); ?></h1>
                         <p class="lead text-muted">На этой странице вы можете посмотреть заказы своей организации</p>
                     <?php endif; ?>
                     <?php if(empty($org)): ?>
@@ -40,7 +40,7 @@
                         <tr>
                             <th scope="row"><?php echo e($key +1); ?></th>
                             <td>
-                                <a class="btn btn-outline-dark" href="<?php echo e(url('/orders/' . $order->id)); ?>">
+                                <a class="btn btn-outline-dark" href="<?php echo e(url('/orders/' . $order->id . '/' . $role)); ?>">
                                 <?php echo e($order->number); ?>
 
                                 </a>

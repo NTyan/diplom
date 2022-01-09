@@ -6,7 +6,7 @@
 <?php $component->withAttributes([]); ?>
     <?php $__env->startSection('title', 'Order'); ?>
     <div class="container py-5">
-        <div class="card ">
+        <div class="card " id="card">
             <div class="card-body d-flex justify-content-between">
                 <h5 class="card-title">
                     Заказ <?php echo e($order->number); ?>
@@ -41,14 +41,14 @@
                             </span>
                 </h5>
                 <?php if($role === "customer"): ?>
-                <a href="#" class="btn btn-danger">Отменить</a>
+                    <div><a href="#" class="btn btn-danger remove">Отменить</a></div>
                 <?php endif; ?>
             </div>
             <ul class="list-group list-group-flush">
                 <?php $__currentLoopData = $models; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $model): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <li class="list-group-item">
-                        <div class="p-2 flex-fill"><b>Название:</b> <?php echo e($model->title); ?></div>
-                        <table class="table table-hover table-info">
+                        <div class="p-2 flex-fill"><b><?php echo e($model->title); ?></b> </div>
+                        <table class="table table-info" id="excel">
                             <tbody>
                             <tr>
                                 <th scope="row"><?php echo e($key +1); ?></th>
@@ -78,6 +78,9 @@
                                     <dt>Цена</dt>
                                     <dd> <?php echo e($model->price); ?></dd>
                                 </td>
+                                <td class="remove">
+                                    <a href="/file/<?php echo e($order->id); ?>/<?php echo e($model->id); ?>"><i class="bi bi-file-earmark-arrow-down"></i></a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -88,7 +91,7 @@
                         <div>
                             Сумма: <?php echo e($order->sum); ?> р.
                             <?php if(!$order->is_paid && $role === "customer"): ?>
-                                <a href="#" class="card-link">Оплатить</a>
+                                <a href="#" class="card-link remove">Оплатить</a>
                             <?php elseif(!$order->is_paid && $role === "executor"): ?>
                                 <p class="text-danger">Неоплачено</p>
                             <?php else: ?>
@@ -96,7 +99,7 @@
                             <?php endif; ?>
                         </div>
                     <?php if($role === "executor" && $order->status === "processing"): ?>
-                        <div class="ml-2 align-self-center">
+                        <div class="ml-2 align-self-center remove">
                             <a href="#" class="btn btn-sm btn-info status" data-id="<?php echo e($order->id); ?>">Подтвердить оплату</a>
                         </div>
                     <?php endif; ?>
@@ -115,11 +118,53 @@
                 </li>
                 <?php endif; ?>
             </ul>
-            <div class="card-body">
-                <a href="#" class="card-link">Распечатать</a>
-                <a href="#" class=" btn btn-primary">Чат с <?php echo e($name); ?></a>
+            <div class="card-body remove">
+                <a href="#" class="card-link" id="print">Распечатать</a>
+                <a href="#!" class="btn btn-primary" id="chat"
+                   data-toggle="modal" data-target=".modal-data"
+                   data-order="<?php echo e($order->id); ?>"
+                   data-role="<?php echo e($role); ?>">Чат с <?php echo e($name); ?></a>
             </div>
         </div>
+    </div>
+
+    
+    <div class="modal fade modal-data " id="modal_hide" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content p-3">
+                <div class="card-header">
+                    <h4 class="card-title-chat"><strong>Чат</strong></h4>
+                    <?php if($role === 'customer'): ?>
+                        <a class="btn btn-xs btn-info" href="/organization/<?php echo e($order->organization_id); ?>" data-abc="true"><?php echo e($name); ?></a>
+                    <?php endif; ?>
+                </div>
+                <div class="ps-container ps-theme-default ps-active-y" id="chat-content" style="overflow-y: scroll !important; height:400px !important;">
+
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px;">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px;"></div>
+                    </div>
+
+                </div>
+                <div class="publisher bt-1 border-light">
+                    <?php if($role === 'customer'): ?>
+                        <img class="avatar avatar-xs rounded-circle" src="https://img.icons8.com/color/36/000000/administrator-male.png">
+                    <?php else: ?>
+                        <img class="avatar avatar-xs rounded-circle" id="org_img">
+                    <?php endif; ?>
+                    <input class="publisher-input" type="text" placeholder="Новое сообщение">
+                    <a class="publisher-btn text-info" id="send_message"  href="#"
+                        data-role="<?php echo e($role); ?>"
+                        data-order="<?php echo e($order->id); ?>">
+                        <i class="bi bi-send"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
@@ -129,7 +174,34 @@
 <?php endif; ?>
 
 <script>
+
     $(document).ready(function () {
+
+        let timerId;
+
+        let options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timezone: 'UTC',
+            hour: 'numeric',
+            minute: 'numeric',
+        };
+
+        const targetNode = document.getElementById('modal_hide');
+        const config = { attributes: true};
+        const callback = function(mutationsList, observer) {
+            for(const mutation of mutationsList) {
+                if (mutation.attributeName === 'aria-hidden') {
+                    if(!$("#modal_hide").hasClass("show"))
+                        clearInterval(timerId);
+                }
+            }
+        };
+
+        const observer = new MutationObserver(callback);
+        observer.observe(targetNode, config);
+
         $(document).on('click', '.status', function () {
             let order_id = $(this).data('id');
 
@@ -151,6 +223,138 @@
                     window.location.reload();
                 }
             });
+        });
+
+        $('#print').on('click', function () {
+            // let card = $('.card').clone();
+            // card.find('.remove').remove();
+
+        });
+
+        $(document).on('click', '#chat', function () {
+
+            let order_id = $(this).data('order');
+            let role = $(this).data('role');
+
+            function show() {
+
+                $.ajax({
+                    url: "/get-messages", // куда отправляем
+                    type: "post", // метод передачи
+                    dataType: 'json',
+                    headers: {'X-CSRF-TOKEN':"<?php echo e(csrf_token()); ?>"},
+                    data: {
+                        'order_id' : order_id
+                    },
+                    // после получения ответа сервера
+                    complete: function (mes) {
+                        if (mes.status !== 200) {
+                            alert("Ошибка");
+                            return 0;
+                        }
+                        let messages = mes.responseJSON['messages'];
+                        let org_id = mes.responseJSON['org_id'];
+                        let customer_id = mes.responseJSON['user_id'];
+                        let img = mes.responseJSON['imgPath'];
+
+                        $('#chat-content').empty();
+
+                        for(let i = 0; i < messages.length; i++) {
+
+                            let add;
+
+                            if (role === 'customer' ) {
+                                if (messages[i].sender_id === customer_id) {
+                                    add = ' <div class="media media-chat media-chat-reverse">'
+                                        + '<div class="media-body">'
+                                        + '<p>' + messages[i].message + '</p>'
+                                        + '<p class="meta text-secondary"><time>' + new Date(messages[i].created_at).toLocaleString("ru", options) + '</time></p>'
+                                        + '</div></div>';
+                                }
+                                else {
+                                    add = '<div class="media media-chat"> <img class="avatar" src="' + img + '" alt="...">'
+                                        + '<div class="media-body">'
+                                        + '<p>' + messages[i].message + '</p>'
+                                        + '<p class="meta"><time>' + new Date(messages[i].created_at).toLocaleString("ru", options) + '</time></p>'
+                                        + '</div></div>';
+                                }
+                            }
+                            else {
+
+                                $('#org_img').attr("src", img);
+
+                                if (messages[i].sender_id === org_id) {
+                                    add = ' <div class="media media-chat media-chat-reverse">'
+                                        + '<div class="media-body">'
+                                        + '<p>' + messages[i].message + '</p>'
+                                        + '<p class="meta text-secondary"><time>' + new Date(messages[i].created_at).toLocaleString("ru", options) + '</time></p>'
+                                        + '</div></div>';
+                                }
+                                else {
+                                    add = '<div class="media media-chat"> <img class="avatar" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">'
+                                        + '<div class="media-body">'
+                                        + '<p>' + messages[i].message + '</p>'
+                                        + '<p class="meta"><time>' + new Date(messages[i].created_at).toLocaleString("ru", options) + '</time></p>'
+                                        + '</div></div>';
+                                }
+                            }
+                            $('#chat-content').append(add);
+                        }
+                        $('#chat-content').scrollTop(document.getElementById('chat-content').scrollHeight - $('#chat-content').height());
+                    }
+                });
+            }
+
+            show();
+            timerId = setInterval( function () {
+                show();
+            }, 5000);
+        });
+
+
+
+        $(document).on('click', '#send_message', function () {
+
+            let message = $('.publisher-input').val();
+
+            if(message === '')
+                return 0;
+
+            let order_id = $(this).data('order');
+            let role = $(this).data('role');
+
+            $.ajax({
+                url: "/send-message", // куда отправляем
+                type: "post", // метод передачи
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN':"<?php echo e(csrf_token()); ?>"},
+                data: {
+                    'order_id' : order_id,
+                    'role' : role,
+                    'message' : message
+                },
+                // после получения ответа сервера
+                complete: function (mes) {
+                    if (mes.status !== 200) {
+                        alert("Ошибка");
+                        return 0;
+                    }
+
+                    let add = ' <div class="media media-chat media-chat-reverse">'
+                        + '<div class="media-body">'
+                        + '<p>' + message + '</p>'
+                        + '<p class="meta text-secondary"><time>' + new Date().toLocaleString("ru", options) + '</time></p>'
+                        + '</div></div>';
+
+                    $('#chat-content').append(add);
+
+                    $('#chat-content').scrollTop(document.getElementById('chat-content').scrollHeight - $('#chat-content').height());
+
+                    $('.publisher-input').val('');
+
+                }
+            });
+
         });
     })
 </script>

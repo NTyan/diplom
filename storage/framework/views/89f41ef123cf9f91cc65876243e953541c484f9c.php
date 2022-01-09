@@ -18,7 +18,9 @@
                     <dt>Phone</dt>
                     <dd><?php echo e($org->phone_number); ?></dd>
                 </dl>
-                <a href="/org-orders/<?php echo e($org->id); ?>" class="btn btn-success">Заказы</a>
+                <?php if(Auth::user()->id === $org->user_id): ?>
+                    <a href="/org-orders/<?php echo e($org->id); ?>" class="btn btn-success">Заказы</a>
+                <?php endif; ?>
                 <ul class="list-group my-2">
                     <li class="list-group-item"><?php echo e($org::TYPES[$org->type]); ?></li>
                     <li class="list-group-item">Адрес: <?php echo e($org->jur_address); ?></li>
@@ -27,8 +29,9 @@
                     <li class="list-group-item">ОГРН: <?php echo e($org->ogrn); ?></li>
                     <li class="list-group-item">р/с: <?php echo e($org->payment_account); ?></li>
                 </ul>
-                <a href="#!" class="btn-link" data-toggle="modal" data-target=".modal-data">Редактировать данные организации</a>
-
+                <?php if(Auth::user()->id === $org->user_id): ?>
+                    <a href="#!" class="btn-link" data-toggle="modal" data-target=".modal-data">Редактировать данные организации</a>
+                <?php endif; ?>
                 <h4 class="card-title text-center">Цены</h4>
                 <table class="table">
                     <thead class="thead-light">
@@ -48,11 +51,13 @@
                 </table>
                 <h4 class="card-title text-center">О нас</h4>
                 <div class="bg-secondary text-white p-3"><?php echo e($org->description); ?></div>
-                <div class="card-body d-flex justify-content-between">
-                    <a href="#!" class="btn-link" data-toggle="modal" data-target=".modal-prices">Редактировать цены</a>
-                    <a href="/delete-org/<?php echo e($org->id); ?>" class="btn-link text-danger">Удалить организацию</a>
-                </div>
 
+                <?php if(Auth::user()->id === $org->user_id): ?>
+                    <div class="card-body d-flex justify-content-between">
+                        <a href="#!" class="btn-link" data-toggle="modal" data-target=".modal-prices">Редактировать цены</a>
+                        <a href="/delete-org/<?php echo e($org->id); ?>" class="btn-link text-danger">Удалить организацию</a>
+                    </div>
+                <?php endif; ?>
             </div>
 
         </div>

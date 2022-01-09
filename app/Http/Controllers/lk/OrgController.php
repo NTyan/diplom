@@ -53,12 +53,13 @@
 
             return view('lk.orgs', ['orgs' => $orgs, 'path' => $path]);
         }
+
         public function organization($id) {
             $org = Organization::where('id', $id)->first();
             $prices = $org->prices;
 
             try{
-                $name = scandir(public_path() . "/files/orgs/" . $org->id)[2] ?? 'default.jpg';
+                $name = scandir(public_path() . "/files/orgs/" . $id)[2] ?? 'default.jpg';
             } catch (Exception $exception) {
                 $name = 'default.jpg';
             }
@@ -114,6 +115,7 @@
 
         public function showOrders($orgId) {
 
+            $org = Organization::find($orgId);
             $user = Auth::user();
             $orgs_id = [];
 
@@ -124,7 +126,7 @@
             if(in_array(+$orgId, $orgs_id, true)) {
                 $orders = Order::where('organization_id', $orgId)->get();
 
-                return view('lk.orders', ['orders' => $orders, 'org' => true]);
+                return view('lk.orders', ['orders' => $orders, 'org' => $org, 'role' => 'executor']);
             }
             else {
                 return abort(404);

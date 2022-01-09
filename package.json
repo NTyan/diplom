@@ -21,6 +21,7 @@
         "tailwindcss": "^2.0.2"
     },
     "dependencies": {
+        "jspdf": "^2.5.0",
         "jszip": "^3.7.1"
     }
 }

@@ -4,21 +4,32 @@
 
     use App\Http\Controllers\Controller;
     use App\Models\Order;
+    use App\Models\OrderModel;
     use App\Models\User;
     use Exception;
+    use Illuminate\Support\Facades\Storage;
+    use Reliese\Coders\Model\Model;
     use Symfony\Component\HttpFoundation\Request;
     use Illuminate\Support\Facades\Auth;
+    use function array_diff;
+    use function array_push;
+    use function file_exists;
     use function in_array;
+    use function public_path;
+    use function readfile;
+    use function scandir;
+    use function storage_path;
     use function view;
 
     class OrdersController extends Controller
     {
         public function show() {
+
             $orders = Auth::user()->orders;
 
-            return view('lk.orders', ['orders' => $orders]);
+            return view('lk.orders', ['orders' => $orders, 'role' => 'customer']);
         }
-        public function order($id) {
+        public function order($id, $role) {
 
             $order = Order::where('id', $id)
                 ->with('orderModels')
@@ -38,13 +49,11 @@
                     $models = $order->orderModels;
                     $org = $order->organization;
 
-                    if($user->id === $order->user_id) {
+                    if($role === "customer") {
                         $name = $org->name;
-                        $role = "customer";
                     }
-                    else {
+                    elseif($role === "executor") {
                         $name = $user->name;
-                        $role = "executor";
                     }
 
                     return view('lk.order',
@@ -53,7 +62,7 @@
                         'models' => $models,
                         'org' => $org,
                         'role' => $role,
-                        'name' =>$name
+                        'name' =>$name,
                         ]);
                 }
                 else {
@@ -73,4 +82,20 @@
             }
             return true;
         }
+
+        public function downloadFile($order_id, $model_id) {
+
+            $model = OrderModel::find($model_id);
+            $filePath = storage_path() . '/app/public/files/orders/' . $order_id . '/' . $model_id . '.stl';
+
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . $model->title . '.stl"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($filePath));
+            return readfile($filePath);
+        }
+
     }
