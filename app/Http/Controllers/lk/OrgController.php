@@ -87,7 +87,7 @@
             $file = $request->file('file');
 
             if($file !== null) {
-                if($file->getMimeType() !== 'image/jpeg') {
+                if($file->getMimeType() !== 'image/jpeg' || $file->getMimeType() !== 'image/png') {
                     return abort(500, 'Тип изображения не поддерживается');
                 }
                 if(getimagesize($file)[0] > 600 || getimagesize($file)[1] > 400) {
@@ -98,13 +98,13 @@
 
                 if (file_exists($dir)) {
                     $files = array_diff(scandir($dir), ['.','..']);
-                    foreach ($files as $file) {
-                        (is_dir($dir.'/'.$file)) ? delDir($dir.'/'.$file) : unlink($dir.'/'.$file);
+                    foreach ($files as $xfile) {
+                        (is_dir($dir.'/'.$xfile)) ? delDir($dir.'/'.$xfile) : unlink($dir.'/'.$xfile);
                     }
                     rmdir($dir);
                 }
 
-                $file->move($dir  . '/', time() . '.jpg');
+                $file->move($dir  . '/', time());
             }
 
             if (!filter_var($request['email'], FILTER_VALIDATE_EMAIL)) {
@@ -132,7 +132,8 @@
             $file = $request->file('file');
 
             if($file !== null) {
-                if($file->getMimeType() !== 'image/jpeg') {
+
+                if($file->getMimeType() !== 'image/jpeg' && $file->getMimeType() !== 'image/png') {
                     return abort(500, 'Тип изображения не поддерживается');
                 }
                 if(getimagesize($file)[0] > 600 || getimagesize($file)[1] > 400) {
@@ -160,7 +161,7 @@
                 ->save();
 
 
-            $file?->move(public_path() . '/files/orgs/' . $org->id . '/', time() . '.jpg');
+            $file?->move(public_path() . '/files/orgs/' . $org->id . '/', time());
 
             $request->session()->put('org_id', $org->id);
             return true;
