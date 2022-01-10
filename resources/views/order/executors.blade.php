@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('title', 'Executors')
+    @section('title', 'Исполнители')
     <div class="container my-5">
         <main role="main">
 

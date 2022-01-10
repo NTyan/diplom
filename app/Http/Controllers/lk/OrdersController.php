@@ -23,13 +23,16 @@
 
     class OrdersController extends Controller
     {
-        public function show() {
+        public function show(Request $request) {
 
             $orders = Auth::user()->orders;
+            $role = $request->session()->put('role', 'customer');
 
-            return view('lk.orders', ['orders' => $orders, 'role' => 'customer']);
+            return view('lk.orders', ['orders' => $orders]);
         }
-        public function order($id, $role) {
+        public function order($id, Request $request) {
+
+            $role = $request->session()->get('role');
 
             $order = Order::where('id', $id)
                 ->with('orderModels')
@@ -47,7 +50,7 @@
                 if($user->id === $order->user_id || in_array($order->organization_id, $orgs_id, true)) {
 
                     $models = $order->orderModels;
-                    $org = $order->organization;
+                    $org = $order->organization()->withTrashed()->first();
 
                     if($role === "customer") {
                         $name = $org->name;
@@ -73,9 +76,40 @@
         public function changeOrderStatusPaid(Request $request) {
             try {
                 $orderId = $request['order_id'];
-                $order = Order::find($orderId)->setIsPaid(true)->setStatusConfirmed();
+                Order::find($orderId)->setIsPaid(true)->setStatusConfirmed()->save();
 
-                $order->save();
+            } catch (Exception $exception) {
+                return new Exception($exception->getMessage());
+            }
+            return true;
+        }
+
+        public function changeOrderStatusCanceled(Request $request) {
+            try {
+                $orderId = $request['order_id'];
+                Order::find($orderId)->setStatusCanceled()->save();
+
+            } catch (Exception $exception) {
+                return new Exception($exception->getMessage());
+            }
+            return true;
+        }
+
+        public function changeOrderStatusTransit(Request $request) {
+            try {
+                $orderId = $request['order_id'];
+                Order::find($orderId)->setStatusTransit()->save();
+
+            } catch (Exception $exception) {
+                return new Exception($exception->getMessage());
+            }
+            return true;
+        }
+
+        public function changeOrderStatusCompleted(Request $request) {
+            try {
+                $orderId = $request['order_id'];
+                Order::find($orderId)->setStatusCompleted()->save();
 
             } catch (Exception $exception) {
                 return new Exception($exception->getMessage());

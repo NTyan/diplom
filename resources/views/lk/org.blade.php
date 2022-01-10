@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('title', 'Organization')
+    @section('title', 'Организация')
     <div class="container py-5">
         <div class="card pt-3">
             <img class="card-img-top w-25 align-self-center"
@@ -136,7 +136,7 @@
                             <tr>
                                 <td><input class="form-control plastic update-plastic"  value="{{$price->plastic}}" disabled></td>
                                 <td><input class="form-control price update-price"  value="{{$price->price}}"></td>
-                                <td><div class="btn delete-plastic" data-id="{{$price->id}}"><i class="bi bi-trash-fill text-black-50"></i></div></td>
+                                <td><div class="btn delete-plastic" title="Удалить"><i class="bi bi-trash-fill text-black-50"></i></div></td>
                             </tr>
                         @endforeach
                         <tr>
@@ -147,7 +147,7 @@
                                 </select>
                             </td>
                             <td><input type="text" class="form-control price" ></td>
-                            <td><div class="btn add-plastic"><i class="bi bi-plus-square text-black-50"></i></div></td>
+                            <td><div class="btn add-plastic" title="Применить"><i class="bi bi-plus-square text-black-50"></i></div></td>
                         </tr>
                         </tbody>
                     </table>
@@ -187,9 +187,10 @@
             let add = '<tr>' +
                        ' <td><input class="form-control plastic update-plastic" value=' + $item_plastic + ' disabled=""></td>' +
                        ' <td><input class="form-control price update-price" value=' + $item_price + '></td>' +
-                        '<td><div class="btn delete-plastic" data-id="8"><i class="bi bi-trash-fill text-black-50"></i></div></td>' +
+                        '<td><div class="btn delete-plastic" ><i class="bi bi-trash-fill text-black-50"></i></div></td>' +
                     '</tr>';
             $(this).closest('tr').before(add);
+            $(this).closest('tr').find('.price').val('');
 
         });
 

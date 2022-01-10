@@ -4,7 +4,7 @@
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php $component->withAttributes([]); ?>
-    <?php $__env->startSection('title', 'Orders'); ?>
+    <?php $__env->startSection('title', 'Заказы'); ?>
     <div class="container my-5">
         <main role="main">
 
@@ -31,7 +31,7 @@
                     <th>#</th>
                     <th>Номер заказа</th>
                     <th>Статус</th>
-                    <th>Дата</th>
+                    <th>Дата и время</th>
                     <th>Сумма</th>
                 </tr>
                 </thead>
@@ -40,7 +40,7 @@
                         <tr>
                             <th scope="row"><?php echo e($key +1); ?></th>
                             <td>
-                                <a class="btn btn-outline-dark" href="<?php echo e(url('/orders/' . $order->id . '/' . $role)); ?>">
+                                <a class="btn btn-outline-dark" href="<?php echo e(url('/orders/' . $order->id)); ?>">
                                 <?php echo e($order->number); ?>
 
                                 </a>
@@ -75,7 +75,7 @@
                                             <?php echo e(App\Models\Order::STATUS[$order->status]); ?></span>
                                         <?php endif; ?>
                             </td>
-                            <td><?php echo e($order->created_at); ?></td>
+                            <td><?php echo e($order->created_at->format('d.m.y в G:i')); ?></td>
                             <td>
                                 <?php if($order->is_paid): ?>
                                     <i class="bi bi-credit-card-2-front-fill text-success"></i>

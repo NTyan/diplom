@@ -1,10 +1,9 @@
 <?php $__env->startComponent('mail::layout'); ?>
 
 <?php $__env->slot('header'); ?>
-<?php $__env->startComponent('mail::header', ['url' => config('app.url')]); ?>
-<?php echo e(config('app.name')); ?>
 
-<?php echo $__env->renderComponent(); ?>
+
+
 <?php $__env->endSlot(); ?>
 
 
@@ -24,7 +23,7 @@
 
 <?php $__env->slot('footer'); ?>
 <?php $__env->startComponent('mail::footer'); ?>
-© <?php echo e(date('Y')); ?> <?php echo e(config('app.name')); ?>. <?php echo app('translator')->get('All rights reserved.'); ?>
+© <?php echo e(date('Y')); ?> <?php echo e(config('app.name')); ?>. <?php echo app('translator')->get('Все права защищены'); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>

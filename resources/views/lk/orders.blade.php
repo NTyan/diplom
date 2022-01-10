@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('title', 'Orders')
+    @section('title', 'Заказы')
     <div class="container my-5">
         <main role="main">
 
@@ -26,7 +26,7 @@
                     <th>#</th>
                     <th>Номер заказа</th>
                     <th>Статус</th>
-                    <th>Дата</th>
+                    <th>Дата и время</th>
                     <th>Сумма</th>
                 </tr>
                 </thead>
@@ -35,7 +35,7 @@
                         <tr>
                             <th scope="row">{{$key +1}}</th>
                             <td>
-                                <a class="btn btn-outline-dark" href="{{url('/orders/' . $order->id . '/' . $role)}}">
+                                <a class="btn btn-outline-dark" href="{{url('/orders/' . $order->id)}}">
                                 {{$order->number}}
                                 </a>
                             </td>
@@ -69,7 +69,7 @@
                                             {{App\Models\Order::STATUS[$order->status]}}</span>
                                         @endisset
                             </td>
-                            <td>{{$order->created_at}}</td>
+                            <td>{{$order->created_at->format('d.m.y в G:i')}}</td>
                             <td>
                                 @if($order->is_paid)
                                     <i class="bi bi-credit-card-2-front-fill text-success"></i>

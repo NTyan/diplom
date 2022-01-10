@@ -1,5 +1,5 @@
 <x-app-layout>
-@section('title', 'New Order')
+@section('title', 'Новый заказ')
     <div class="container " >
         <form method="post" enctype="multipart/form-data" id="files"
               class="d-flex flex-column justify-content-center flex-wrap align-content-around"

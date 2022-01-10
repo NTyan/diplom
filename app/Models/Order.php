@@ -48,6 +48,9 @@ class Order extends Model
      */
     protected $fillable = ['user_id', 'organization_id', 'number', 'created_at', 'updated_at', 'status', 'is_paid', 'deleted_at', 'sum', 'comment', 'date_of_receiving'];
 
+
+    protected $dates = ['date_of_receiving'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

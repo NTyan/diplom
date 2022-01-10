@@ -4,7 +4,7 @@
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php $component->withAttributes([]); ?>
-<?php $__env->startSection('title', 'New Order'); ?>
+<?php $__env->startSection('title', 'Новый заказ'); ?>
     <div class="container " >
         <form method="post" enctype="multipart/form-data" id="files"
               class="d-flex flex-column justify-content-center flex-wrap align-content-around"

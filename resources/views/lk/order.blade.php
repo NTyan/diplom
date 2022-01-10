@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('title', 'Order')
+    @section('title', 'Заказ')
     <div class="container py-5">
         <div class="card " id="card">
             <div class="card-body d-flex justify-content-between">
@@ -33,8 +33,14 @@
                         {{App\Models\Order::STATUS[$order->status]}}
                             </span>
                 </h5>
-                @if($role === "customer")
-                    <div><a href="#" class="btn btn-danger remove">Отменить</a></div>
+                @if($role === "customer" && ($order->status === 'processing' || $order->status === 'confirmed'))
+                    <div><a href="#" class="btn btn-danger" id="cancel_order" data-id="{{$order->id}}">Отменить</a></div>
+                @endif
+                @if($role === "executor" && $order->status === 'confirmed' )
+                    <div><a href="#" class="btn btn-info" id="transit_order" data-id="{{$order->id}}">Отправлен</a></div>
+                @endif
+                @if($role === "customer" && $order->status === 'transit' )
+                    <div><a href="#" class="btn btn-success" id="completed_order" data-id="{{$order->id}}">Подтвердить получение</a></div>
                 @endif
             </div>
             <ul class="list-group list-group-flush">
@@ -100,7 +106,7 @@
                 </li>
                 @if($order->date_of_receiving)
                 <li class="list-group-item ">
-                   <b> Желаемая дата получения: </b>{{$order->date_of_receiving}}
+                   <b> Желаемая дата получения: </b>{{$order->date_of_receiving->format('d.m.y')}}
                 </li>
                 @endif
                 @if($order->comment)
@@ -146,7 +152,7 @@
                     @else
                         <img class="avatar avatar-xs rounded-circle" id="org_img">
                     @endif
-                    <input class="publisher-input" type="text" placeholder="Новое сообщение">
+                    <input class="publisher-input" type="text" id="input_message" placeholder="Новое сообщение">
                     <a class="publisher-btn text-info" id="send_message"  href="#"
                         data-role="{{$role}}"
                         data-order="{{$order->id}}">
@@ -193,6 +199,75 @@
 
             $.ajax({
                 url: "/order-status-paid", // куда отправляем
+                type: "post", // метод передачи
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN':"{{ csrf_token() }}"},
+                data: {
+                    'order_id' : order_id
+                },
+                // после получения ответа сервера
+                complete: function (mes) {
+                    if (mes.status !== 200) {
+                        alert("Ошибка");
+                        return 0;
+                    }
+
+                    window.location.reload();
+                }
+            });
+        });
+
+        $(document).on('click', '#cancel_order', function () {
+            let order_id = $(this).data('id');
+
+            $.ajax({
+                url: "/order-status-canceled", // куда отправляем
+                type: "post", // метод передачи
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN':"{{ csrf_token() }}"},
+                data: {
+                    'order_id' : order_id
+                },
+                // после получения ответа сервера
+                complete: function (mes) {
+                    if (mes.status !== 200) {
+                        alert("Ошибка");
+                        return 0;
+                    }
+
+                    window.location.reload();
+                }
+            });
+        });
+
+        $(document).on('click', '#transit_order', function () {
+            let order_id = $(this).data('id');
+
+            $.ajax({
+                url: "/order-status-transit", // куда отправляем
+                type: "post", // метод передачи
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN':"{{ csrf_token() }}"},
+                data: {
+                    'order_id' : order_id
+                },
+                // после получения ответа сервера
+                complete: function (mes) {
+                    if (mes.status !== 200) {
+                        alert("Ошибка");
+                        return 0;
+                    }
+
+                    window.location.reload();
+                }
+            });
+        });
+
+        $(document).on('click', '#completed_order', function () {
+            let order_id = $(this).data('id');
+
+            $.ajax({
+                url: "/order-status-completed", // куда отправляем
                 type: "post", // метод передачи
                 dataType: 'json',
                 headers: {'X-CSRF-TOKEN':"{{ csrf_token() }}"},
@@ -286,6 +361,7 @@
                             }
                             $('#chat-content').append(add);
                         }
+
                         $('#chat-content').scrollTop(document.getElementById('chat-content').scrollHeight - $('#chat-content').height());
                     }
                 });

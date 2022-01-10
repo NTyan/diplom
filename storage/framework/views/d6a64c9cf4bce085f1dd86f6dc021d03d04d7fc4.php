@@ -4,7 +4,7 @@
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php $component->withAttributes([]); ?>
-    <?php $__env->startSection('title', 'Business'); ?>
+    <?php $__env->startSection('title', 'Бизнес'); ?>
     <div class="container my-5">
         <main role="main">
 
@@ -13,8 +13,7 @@
                     <h1 class="jumbotron-heading">Мои организации</h1>
                     <p class="lead text-muted">На этой странице вы можете добавить организации, специализирующиеся на 3д печати, владельцем которых являетесь.</p>
                     <p>
-                        <a href="#" class="btn btn-primary my-2">Добавить новую организацию</a>
-                        <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+                        <a href="#" class="btn btn-primary my-2" data-toggle="modal" data-target=".modal-data">Добавить новую организацию</a>
                     </p>
                 </div>
             </section>
@@ -33,13 +32,20 @@
                                 </div>
                                 <div class="card-body">
                                     <h4><?php echo e($org->name); ?></h4>
-                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                    <p class="card-text"><?php echo e($org->description); ?></p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
                                             <a href="/organization/<?php echo e($org->id); ?>" class="btn btn-sm btn-outline-secondary">Просмотр</a>
                                             <a href="/org-orders/<?php echo e($org->id); ?>" class="btn btn-sm btn-outline-secondary">Заказы</a>
                                         </div>
-                                        <small class="text-muted">Рейтинг</small>
+                                        <small class="text-muted">
+                                        <?php if(isset($prices[$org->id])): ?>
+                                            Цены от <b><?php echo e(min(($prices[$org->id]))); ?></b>р./г.
+                                        <?php endif; ?>
+                                        <?php if(empty($prices[$org->id])): ?>
+                                            Цены не указаны
+                                        <?php endif; ?>
+                                        </small>
                                     </div>
                                 </div>
                             </div>
@@ -52,10 +58,230 @@
 
         </main>
     </div>
+    
+    <div class="modal fade modal-data "  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content p-3">
+                <form method="POST" id="info" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
+                    <div class="form-group">
+                        <label for="name">Название*</label>
+                        <input type="text" name="name" class="form-control" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Тип организации*</label>
+                        <select class="custom-select" name="type" id="type">
+                            <?php $__currentLoopData = App\Models\Organization::TYPES; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($key); ?>"><?php echo e($type); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон*</label>
+                        <input type="text" name="phone" class="form-control" id="phone" maxlength="11" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email*</label>
+                        <input type="text" name="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Юридический адрес*</label>
+                        <input type="text" name="address" class="form-control" id="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inn">ИНН*</label>
+                        <input type="text" name="inn" class="form-control" id="inn" minlength="12" maxlength="12" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="kpp">КПП*</label>
+                        <input type="text" name="kpp" class="form-control" id="kpp" minlength="9" maxlength="9" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ogrn">ОГРН*</label>
+                        <input type="text" name="ogrn" class="form-control" id="ogrn" minlength="13" maxlength="13" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="payment">Рассчетный счет*</label>
+                        <input type="text" name="payment" class="form-control" id="payment" minlength="20" maxlength="20" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Описание</label>
+                        <textarea class="form-control" name="description" id="description" ></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" name="file" class="form-control-file" id="file" >
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        <button type="button" class="btn btn-primary edit-info" id="new-org">Добавить цены</button>
+                        <a hidden data-toggle="modal" data-target=".modal-prices" id="show-price"></a>
+                    </div>
+                </form>
+            </div>
+            <div class="alert alert-danger" hidden role="alert">
+                <strong>Что-то пошло не так!</strong> <p id="error"></p>
+            </div>
+
+        </div>
+
+    </div>
+
+    
+    <div class="modal fade modal-prices "  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content p-3">
+                <form method="POST" id="price">
+                    <?php echo csrf_field(); ?>
+                    <h4 class="card-title text-center">Цены</h4>
+                    <table class="table">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>Пластик</th>
+                            <th>Цена за грамм, р.</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><select class="custom-select plastic">
+                                    <?php $__currentLoopData = App\Models\OrderModel::PLASTIC; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option><?php echo e($item); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                            </td>
+                            <td><input type="text" class="form-control price" ></td>
+                            <td><div class="btn add-plastic" title="Применить"><i class="bi bi-plus-square text-black-50" ></i></div></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        <button type="button" class="btn btn-primary " id="new-price">Сохранить изменения</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginal8e2ce59650f81721f93fef32250174d77c3531da)): ?>
 <?php $component = $__componentOriginal8e2ce59650f81721f93fef32250174d77c3531da; ?>
 <?php unset($__componentOriginal8e2ce59650f81721f93fef32250174d77c3531da); ?>
 <?php endif; ?>
+<script>
+    $(document).ready(function () {
+
+        $(document).on('click', '.delete-plastic', function () {
+            $(this).closest('tr').remove();
+        });
+
+        $(".add-plastic").on('click', function () {
+
+            $plastic_array = [];
+
+            $item_price = $(this).closest('tr').find('.price').val();
+            $item_plastic = $(this).closest('tr').find('.plastic').val();
+
+            for(let i = 0; i < $('.plastic').length; i++) {
+                $plastic_array.push($('.plastic')[i].value);
+            }
+
+            let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
+            findDuplicates($plastic_array);
+
+            if($item_price === '' || isNaN($item_price) || findDuplicates($plastic_array).length > 0) {
+                return 0;
+            }
+
+            let add = '<tr>' +
+                ' <td><input class="form-control plastic update-plastic" value=' + $item_plastic + ' disabled=""></td>' +
+                ' <td><input class="form-control price update-price" value=' + $item_price + '></td>' +
+                '<td><div class="btn delete-plastic" title="Удалить"><i class="bi bi-trash-fill text-black-50"></i></div></td>' +
+                '</tr>';
+            $(this).closest('tr').before(add);
+
+            $(this).closest('tr').find('.price').val('');
+
+        });
+
+        $("#new-org").on('click', function () {
+
+            $('.alert-danger').attr("hidden",true);
+
+            if(
+                $('#name').val() === '' ||
+                $('#address').val() === '' ||
+                $('#inn').val() === '' ||
+                $('#kpp').val() === '' ||
+                $('#ogrn').val() === '' ||
+                $('#email').val() === '' ||
+                $('#phone').val() === '' ||
+                $('#payment').val() === ''
+            )
+            {
+                $('#error').html('Заполните все поля!');
+                $('.alert-danger').removeAttr('hidden');
+                return 0;
+            }
+
+            var form_data = new FormData($('#info')[0]);
+
+            $.ajax({
+                url: "/add-new-org", // куда отправляем
+                type: "post", // метод передачи
+                processData: false,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                headers: {'X-CSRF-TOKEN':"<?php echo e(csrf_token()); ?>"},
+                data: form_data,
+                // после получения ответа сервера
+                complete: function (mes) {
+
+                    if (mes.status !== 200) {
+                        $('#error').html(mes.responseJSON.message + '<br>');
+                        $('.alert-danger').removeAttr('hidden');
+
+                        return 0;
+                    }
+
+                    $('#show-price').trigger('click');
+                }
+            });
+
+            $("#new-price").on('click', function () {
+
+                const $pricesAndPlastic = {};
+
+                let $plastics = $('.update-plastic');
+                let $prices = $('.update-price');
+
+                for(let i = 0; i < $plastics.length; i++) {
+                    $pricesAndPlastic[$plastics[i].value] = $prices[i].value;
+                }
+
+                $.ajax({
+                    url: "/add-new-price", // куда отправляем
+                    type: "post", // метод передачи
+                    headers: {'X-CSRF-TOKEN':"<?php echo e(csrf_token()); ?>"},
+                    dataType: "json",
+                    data: {
+                        'prices' : JSON.stringify($pricesAndPlastic)
+                    },
+                    // после получения ответа сервера
+                    complete: function (mes) {
+
+                        if (mes.status !== 200) {
+                            alert('error');
+                            return 0;
+                        }
+
+                        window.location.href = '/organization/' + mes.responseText;
+                    }
+                });
+            })
+        })
+    })
+</script>
 <?php /**PATH /var/www/app/resources/views/lk/orgs.blade.php ENDPATH**/ ?>

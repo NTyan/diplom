@@ -158,6 +158,8 @@
             $order->sum = $sum;
             $order->save();
 
+            $request->session()->put('role', 'customer');
+
             return redirect(url('/orders/' . $order->id));
         }
     }

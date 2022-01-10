@@ -4,7 +4,7 @@
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php $component->withAttributes([]); ?>
-    <?php $__env->startSection('title', 'Order'); ?>
+    <?php $__env->startSection('title', 'Заказ'); ?>
     <div class="container py-5">
         <div class="card " id="card">
             <div class="card-body d-flex justify-content-between">
@@ -40,8 +40,14 @@
 
                             </span>
                 </h5>
-                <?php if($role === "customer"): ?>
-                    <div><a href="#" class="btn btn-danger remove">Отменить</a></div>
+                <?php if($role === "customer" && ($order->status === 'processing' || $order->status === 'confirmed')): ?>
+                    <div><a href="#" class="btn btn-danger" id="cancel_order" data-id="<?php echo e($order->id); ?>">Отменить</a></div>
+                <?php endif; ?>
+                <?php if($role === "executor" && $order->status === 'confirmed' ): ?>
+                    <div><a href="#" class="btn btn-info" id="transit_order" data-id="<?php echo e($order->id); ?>">Отправлен</a></div>
+                <?php endif; ?>
+                <?php if($role === "customer" && $order->status === 'transit' ): ?>
+                    <div><a href="#" class="btn btn-success" id="completed_order" data-id="<?php echo e($order->id); ?>">Подтвердить получение</a></div>
                 <?php endif; ?>
             </div>
             <ul class="list-group list-group-flush">
@@ -107,7 +113,7 @@
                 </li>
                 <?php if($order->date_of_receiving): ?>
                 <li class="list-group-item ">
-                   <b> Желаемая дата получения: </b><?php echo e($order->date_of_receiving); ?>
+                   <b> Желаемая дата получения: </b><?php echo e($order->date_of_receiving->format('d.m.y')); ?>
 
                 </li>
                 <?php endif; ?>
@@ -155,7 +161,7 @@
                     <?php else: ?>
                         <img class="avatar avatar-xs rounded-circle" id="org_img">
                     <?php endif; ?>
-                    <input class="publisher-input" type="text" placeholder="Новое сообщение">
+                    <input class="publisher-input" type="text" id="input_message" placeholder="Новое сообщение">
                     <a class="publisher-btn text-info" id="send_message"  href="#"
                         data-role="<?php echo e($role); ?>"
                         data-order="<?php echo e($order->id); ?>">
@@ -207,6 +213,75 @@
 
             $.ajax({
                 url: "/order-status-paid", // куда отправляем
+                type: "post", // метод передачи
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN':"<?php echo e(csrf_token()); ?>"},
+                data: {
+                    'order_id' : order_id
+                },
+                // после получения ответа сервера
+                complete: function (mes) {
+                    if (mes.status !== 200) {
+                        alert("Ошибка");
+                        return 0;
+                    }
+
+                    window.location.reload();
+                }
+            });
+        });
+
+        $(document).on('click', '#cancel_order', function () {
+            let order_id = $(this).data('id');
+
+            $.ajax({
+                url: "/order-status-canceled", // куда отправляем
+                type: "post", // метод передачи
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN':"<?php echo e(csrf_token()); ?>"},
+                data: {
+                    'order_id' : order_id
+                },
+                // после получения ответа сервера
+                complete: function (mes) {
+                    if (mes.status !== 200) {
+                        alert("Ошибка");
+                        return 0;
+                    }
+
+                    window.location.reload();
+                }
+            });
+        });
+
+        $(document).on('click', '#transit_order', function () {
+            let order_id = $(this).data('id');
+
+            $.ajax({
+                url: "/order-status-transit", // куда отправляем
+                type: "post", // метод передачи
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN':"<?php echo e(csrf_token()); ?>"},
+                data: {
+                    'order_id' : order_id
+                },
+                // после получения ответа сервера
+                complete: function (mes) {
+                    if (mes.status !== 200) {
+                        alert("Ошибка");
+                        return 0;
+                    }
+
+                    window.location.reload();
+                }
+            });
+        });
+
+        $(document).on('click', '#completed_order', function () {
+            let order_id = $(this).data('id');
+
+            $.ajax({
+                url: "/order-status-completed", // куда отправляем
                 type: "post", // метод передачи
                 dataType: 'json',
                 headers: {'X-CSRF-TOKEN':"<?php echo e(csrf_token()); ?>"},
@@ -300,6 +375,7 @@
                             }
                             $('#chat-content').append(add);
                         }
+
                         $('#chat-content').scrollTop(document.getElementById('chat-content').scrollHeight - $('#chat-content').height());
                     }
                 });
@@ -308,7 +384,7 @@
             show();
             timerId = setInterval( function () {
                 show();
-            }, 5000);
+            }, 10000);
         });
 
 

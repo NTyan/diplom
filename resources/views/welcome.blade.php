@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Welcome</title>
+    <title>Главная</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="\favicon.ico" />
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -21,7 +21,7 @@
         <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
             <img width="200px" src="/logo.svg" class="color">
         </div>
-        <p class="text-white-50">Start Bootstrap</p>
+        <p class="text-white-50">3DPlace</p>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             @if (Route::has('login'))
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -62,11 +62,11 @@
         <div class="row gx-5 justify-content-center">
             <div class="col-lg-6">
                 <div class="text-center my-5">
-                    <h1 class="display-5 fw-bolder text-white mb-2">Present your business in a whole new way</h1>
-                    <p class="lead text-white-50 mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit!</p>
+                    <h1 class="display-5 fw-bolder text-white mb-2">Аддитивные технологии теперь доступны каждому</h1>
+                    <p class="lead text-white-50 mb-4">Данный сервис является площадкой для размещения мощностей 3D печати и предоставлению услуг по взаимодействию с клиентами</p>
                     <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
                         <a class="btn btn-primary btn-lg px-4 me-sm-3" href="/new-order">Начать</a>
-                        <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
+                        <a class="btn btn-outline-light btn-lg px-4" href="#features">Подробнее</a>
                     </div>
                 </div>
             </div>
@@ -79,32 +79,34 @@
         <div class="row gx-5">
             <div class="col-lg-4 mb-5 mb-lg-0">
                 <div class=" bg-primary bg-gradient text-white rounded-3 mb-3 w-25 h1 p-2 text-center">
-                    <i class="bi bi-collection"></i>
+                    <i class="bi bi-wallet-fill"></i>
                 </div>
-                <h2 class="h4 fw-bolder">Featured title</h2>
-                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-                <a class="text-decoration-none" href="#!">
-                    Call to action
+                <h2 class="h4 fw-bolder">Для бизнеса</h2>
+                <p>Добавьте свою организацию, специализирующуюся на 3D печати на нашу площадку, размести описание и цены, и заказы не заставят себя ждать</p>
+                <a class="text-decoration-none" href="{{route('orgs')}}">
+                    Добавить организацию
                     <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
             <div class="col-lg-4 mb-5 mb-lg-0">
-                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3 w-25 h1 p-2 text-center"><i class="bi bi-building"></i></div>
-                <h2 class="h4 fw-bolder">Featured title</h2>
-                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-                <a class="text-decoration-none" href="#!">
-                    Call to action
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3 w-25 h1 p-2 text-center">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <h2 class="h4 fw-bolder">Для физ лиц</h2>
+                <p>Нужна 3D печать своей модели по адекватной цене? Все расчеты заказа сервис сделает за вас автомтаически! Просто загрузите модель и выберите сроки</p>
+                <a class="text-decoration-none" href="{{route('showPage')}}">
+                    Заказать
                     <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
             <div class="col-lg-4">
-                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3 w-25 h1 p-2 text-center"><i class="bi bi-toggles2"></i></div>
-                <h2 class="h4 fw-bolder">Featured title</h2>
-                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-                <a class="text-decoration-none" href="#!">
-                    Call to action
-                    <i class="bi bi-arrow-right"></i>
-                </a>
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3 w-25 h1 p-2 text-center">
+                    <i class="bi bi-truck"></i>
+                </div>
+                <h2 class="h4 fw-bolder">Доставка и оплата</h2>
+                <p>Кроме осуществления взаимодействия между пользователями, наш сервис также предоставляет свои услуги доставки в пункты выдачи, без посредников. Вы всегда будете знать, где сейчас ваш заказ.</p>
+                <p>Оплата производится через сервис на рассчетный счет организации-исполнителя в течение недели после получения заказа. При отмене заказа все средства будут возвращены</p>
+
             </div>
         </div>
     </div>
@@ -113,54 +115,58 @@
 <section class="bg-light py-5 border-bottom">
     <div class="container px-5 my-5">
         <div class="text-center mb-5">
-            <h2 class="fw-bolder">Pay as you grow</h2>
-            <p class="lead mb-0">With our no hassle pricing plans</p>
+            <h2 class="fw-bolder">Цены</h2>
+            <p class="lead mb-0">Разместите <b>цены</b> и <b>достижения</b> в профиле своей организации для улучшения конкурентоспособности</p>
         </div>
         <div class="row gx-5 justify-content-center">
             <!-- Pricing card free-->
             <div class="col-lg-6 col-xl-4">
                 <div class="card mb-5 mb-xl-0">
                     <div class="card-body p-5">
-                        <div class="small text-uppercase fw-bold text-muted">Free</div>
+                        <div class="small text-uppercase fw-bold">PLA</div>
                         <div class="mb-3">
-                            <span class="display-4 fw-bold">$0</span>
-                            <span class="text-muted">/ mo.</span>
+                            от <span class="display-4 fw-bold">{{$PLA}}р.</span>
+                            <span class="text-muted">/ г.</span>
                         </div>
+                        <p >Биоразлагаемый пластик, в основе которого находится молочная кислота. Производится из сахарного тростника или кукурузы.</p>
                         <ul class="list-unstyled mb-4">
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                <strong>1 users</strong>
+                                Твердость (по Роквеллу) — R70-R90
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                5GB storage
+                                Прочность на изгиб — 55,3 МПа
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Unlimited public projects
+                                Прочность на разрыв — 57,8 МПа
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Community access
+                                Плотность — 1,23-1,25 г/см³
+                            </li>
+                            <li class="mb-2 ">
+                                <i class="bi bi-check text-primary"></i>
+                                Точность печати — ± 0,1%
+                            </li>
+                            <li class="mb-2 ">
+                                <i class="bi bi-check text-primary"></i>
+                                Усадка при изготовлении изделий — нет
+                            </li>
+                            <li class="mb-2 ">
+                                <i class="bi bi-check text-primary"></i>
+                                Нетоксичен
                             </li>
                             <li class="mb-2 text-muted">
                                 <i class="bi bi-x"></i>
-                                Unlimited private projects
+                                Низкая температура размягчения (50°C)
                             </li>
                             <li class="mb-2 text-muted">
                                 <i class="bi bi-x"></i>
-                                Dedicated support
-                            </li>
-                            <li class="mb-2 text-muted">
-                                <i class="bi bi-x"></i>
-                                Free linked domain
-                            </li>
-                            <li class="text-muted">
-                                <i class="bi bi-x"></i>
-                                Monthly status reports
+                                Узкий температурный диапазон использования (-20 — +40°C)
                             </li>
                         </ul>
-                        <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
                     </div>
                 </div>
             </div>
@@ -169,48 +175,43 @@
                 <div class="card mb-5 mb-xl-0">
                     <div class="card-body p-5">
                         <div class="small text-uppercase fw-bold">
-                            <i class="bi bi-star-fill text-warning"></i>
-                            Pro
+                            ABS
                         </div>
                         <div class="mb-3">
-                            <span class="display-4 fw-bold">$9</span>
-                            <span class="text-muted">/ mo.</span>
+                           от <span class="display-4 fw-bold">{{$ABS}}р.</span>
+                            <span class="text-muted">/ г.</span>
                         </div>
+                        <p>Ударопрочный пластик, очень популярен в промышленности и 3D-печати. Изделия из ABS достаточно прочны, поэтому его часто используют для печати функциональных объектов, имеющих практическое применение.</p>
                         <ul class="list-unstyled mb-4">
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                <strong>5 users</strong>
+                                Твердость (по Роквеллу) — R105-R110
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                5GB storage
+                                Прочность на изгиб — 41 МПа
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Unlimited public projects
+                                Прочность на разрыв — 22 МПа
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Community access
+                                Плотность — 1,1 г/см³
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Unlimited private projects
+                                Точность печати — ± 1%
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Dedicated support
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check text-primary"></i>
-                                Free linked domain
+                                Усадка при изготовлении изделий — до 0,8%
                             </li>
                             <li class="text-muted">
                                 <i class="bi bi-x"></i>
-                                Monthly status reports
+                                Желтеет на солнечном свете
                             </li>
                         </ul>
-                        <div class="d-grid"><a class="btn btn-primary" href="#!">Choose plan</a></div>
                     </div>
                 </div>
             </div>
@@ -218,47 +219,50 @@
             <div class="col-lg-6 col-xl-4">
                 <div class="card">
                     <div class="card-body p-5">
-                        <div class="small text-uppercase fw-bold text-muted">Enterprise</div>
+                        <div class="small text-uppercase fw-bold">Flex</div>
                         <div class="mb-3">
-                            <span class="display-4 fw-bold">$49</span>
-                            <span class="text-muted">/ mo.</span>
+                           от <span class="display-4 fw-bold">{{$Flex}}р.</span>
+                            <span class="text-muted">/ г.</span>
                         </div>
+                        <p>Мягкий резиноподобный материал. Используется там, где нужна гибкость и эластичность готовых изделий.</p>
                         <ul class="list-unstyled mb-4">
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                <strong>Unlimited users</strong>
+                                Твердость (по Шору) — D40
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                5GB storage
+                                Прочность на изгиб — 5,3 МПа
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Unlimited public projects
+                                Прочность на разрыв — 17,5 МПа
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Community access
+                                Плотность — 1,1 г/см³
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Unlimited private projects
+                                Точность печати — ± 1%
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                Dedicated support
+                                Усадка при изготовлении изделий — 0,35-0,8%
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check text-primary"></i>
-                                <strong>Unlimited</strong>
-                                linked domains
+                                Гибкость
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check text-primary"></i>
+                                Масло-бензостойкость
                             </li>
                             <li class="text-muted">
                                 <i class="bi bi-check text-primary"></i>
-                                Monthly status reports
+                                Сложность печати
                             </li>
                         </ul>
-                        <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
                     </div>
                 </div>
             </div>
@@ -269,8 +273,8 @@
 <section class="py-5 border-bottom">
     <div class="container px-5 my-5 px-5">
         <div class="text-center mb-5">
-            <h2 class="fw-bolder">Customer testimonials</h2>
-            <p class="lead mb-0">Our customers love working with us</p>
+            <h2 class="fw-bolder">Встроенный чат</h2>
+            <p class="lead mb-0">В каждом заказе есть чат между заказчиком и организацией-исполнителем, где можно решить все нюансы</p>
         </div>
         <div class="row gx-5 justify-content-center">
             <div class="col-lg-6">
@@ -280,8 +284,8 @@
                         <div class="d-flex">
                             <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i></div>
                             <div class="ms-4">
-                                <p class="mb-1">Thank you for putting together such a great product. We loved working with you and the whole team, and we will be recommending you to others!</p>
-                                <div class="small text-muted">- Client Name, Location</div>
+                                <p class="mb-1">Здравствуйте! Хочу уточнить детали заказа и поменять цвет.</p>
+                                <div class="small text-muted">- Заказчик, 10:30</div>
                             </div>
                         </div>
                     </div>
@@ -292,8 +296,8 @@
                         <div class="d-flex">
                             <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i></div>
                             <div class="ms-4">
-                                <p class="mb-1">The whole team was a huge help with putting things together for our company and brand. We will be hiring them again in the near future for additional work!</p>
-                                <div class="small text-muted">- Client Name, Location</div>
+                                <p class="mb-1">Добрый вечер. Что именно вас интересует? Давайте обсудим детали!</p>
+                                <div class="small text-muted">- Организация, 10:35</div>
                             </div>
                         </div>
                     </div>
@@ -307,82 +311,19 @@
     <div class="container px-5 my-5 px-5">
         <div class="text-center mb-5">
             <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
-            <h2 class="fw-bolder">Get in touch</h2>
-            <p class="lead mb-0">We'd love to hear from you</p>
-        </div>
-        <div class="row gx-5 justify-content-center">
-            <div class="col-lg-6">
-                <!-- * * * * * * * * * * * * * * *-->
-                <!-- * * SB Forms Contact Form * *-->
-                <!-- * * * * * * * * * * * * * * *-->
-                <!-- This form is pre-integrated with SB Forms.-->
-                <!-- To make this form functional, sign up at-->
-                <!-- https://startbootstrap.com/solution/contact-forms-->
-                <!-- to get an API token!-->
-                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
-                    <!-- Name input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                        <label for="name">Full name</label>
-                        <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
-                    </div>
-                    <!-- Email address input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
-                        <label for="email">Email address</label>
-                        <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                        <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
-                    </div>
-                    <!-- Phone number input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                        <label for="phone">Phone number</label>
-                        <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
-                    </div>
-                    <!-- Message input-->
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
-                        <label for="message">Message</label>
-                        <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
-                    </div>
-                    <!-- Submit success message-->
-                    <!---->
-                    <!-- This is what your users will see when the form-->
-                    <!-- has successfully submitted-->
-                    <div class="d-none" id="submitSuccessMessage">
-                        <div class="text-center mb-3">
-                            <div class="fw-bolder">Form submission successful!</div>
-                            To activate this form, sign up at
-                            <br />
-                            <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                        </div>
-                    </div>
-                    <!-- Submit error message-->
-                    <!---->
-                    <!-- This is what your users will see when there is-->
-                    <!-- an error submitting the form-->
-                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-                    <!-- Submit Button-->
-                    <div class="d-grid"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
-                </form>
-            </div>
+            <h2 class="fw-bolder">Напишите нам!</h2>
+            <p class="lead mb-0">Все замечания, пожелания принимаем по почте <a href="">service@3dplace.ru</a></p>
         </div>
     </div>
 </section>
 <!-- Footer-->
 <footer class="py-5 bg-dark">
-    <div class="container px-5"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+    <div class="container px-5"><p class="m-0 text-center text-white">Все права защищены &copy; 3DPlace 2022</p></div>
 </footer>
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-{{--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>--}}
-<!-- Core theme JS-->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-<!-- * *                               SB Forms JS                               * *-->
-<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
 </body>
 </html>
 

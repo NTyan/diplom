@@ -4,14 +4,14 @@
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php $component->withAttributes([]); ?>
-    <?php $__env->startSection('title', 'Profile'); ?>
+    <?php $__env->startSection('title', 'Профиль'); ?>
     <div class="container my-5">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title"><?php echo e(Auth::user()->name); ?></h4>
                 <h6 class="card-subtitle mb-2 text-muted"><?php echo e(Auth::user()->email); ?></h6>
-                <a href="#!" class="card-link">Сменить пароль</a>
-                <a href="#!" class="card-link">Удалить аккаунт</a>
+                <a href="/forgot-password" class="card-link">Сменить пароль</a>
+                <a href="/delete-account" class="card-link">Удалить аккаунт</a>
             </div>
         </div>
         <div class="d-flex justify-content-between my-5">

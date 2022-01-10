@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
         <title><?php echo $__env->yieldContent('title'); ?></title>
-
+        <title><?php echo e(config('app.name', 'Laravel')); ?></title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">

@@ -30,9 +30,9 @@
 
     class OrgController extends Controller
     {
-        public function show() {
-            $orgs = Auth::user()->organizations;
-            $path = [];
+        public function show(Request $request) {
+            $orgs = Auth::user()->organizations()->with('prices')->get();
+            $path = []; $prices = [];
 
             foreach ($orgs as $org) {
 
@@ -48,14 +48,18 @@
                 else {
                     $path[$org->id] = "/files/orgs/" . $org->id . "/" . $name;
                 }
+
+                foreach ($org->prices as $price) {
+                    $prices[$org->id][] = $price->price;
+                }
             }
 
-
-            return view('lk.orgs', ['orgs' => $orgs, 'path' => $path]);
+            $request->session()->put('role', 'executor');
+            return view('lk.orgs', ['orgs' => $orgs, 'path' => $path, 'prices' => $prices]);
         }
 
         public function organization($id) {
-            $org = Organization::where('id', $id)->first();
+            $org = Organization::find($id);
             $prices = $org->prices;
 
             try{
@@ -85,7 +89,7 @@
                 if(getimagesize($file)[0] > 600 || getimagesize($file)[1] > 400) {
                     return abort(500, 'Размеры не должны превышать 600х400');
                 }
-                $file->move(storage_path() . '/app/public/files/orgs/' . $request['id']  . '/', time() . '.jpg');
+                $file->move(public_path() . '/files/orgs/' . $request['id']  . '/', time() . '.jpg');
             }
 
             if (!filter_var($request['email'], FILTER_VALIDATE_EMAIL)) {
@@ -108,24 +112,81 @@
             return true;
         }
 
+        public function addNewOrg(Request $request) {
+
+            $file = $request->file('file');
+
+            if($file !== null) {
+                if($file->getMimeType() !== 'image/jpeg') {
+                    return abort(500, 'Тип изображения не поддерживается');
+                }
+                if(getimagesize($file)[0] > 600 || getimagesize($file)[1] > 400) {
+                    return abort(500, 'Размеры не должны превышать 600х400');
+                }
+
+            }
+
+            if (!filter_var($request['email'], FILTER_VALIDATE_EMAIL)) {
+                return abort(500, 'Email некорректен');
+            }
+
+            $org = new Organization();
+            $org->setName($request['name'])
+                ->setUserId(Auth::user()->id)
+                ->setDescription($request['description'])
+                ->setEmail($request['email'])
+                ->setInn($request['inn'])
+                ->setJurAddress($request['address'])
+                ->setKpp($request['kpp'])
+                ->setOgrn($request['ogrn'])
+                ->setPaymentAccount($request['payment'])
+                ->setPhoneNumber($request['phone'])
+                ->setType($request['type'])
+                ->save();
+
+
+            $file?->move(public_path() . '/files/orgs/' . $org->id . '/', time() . '.jpg');
+
+            $request->session()->put('org_id', $org->id);
+            return true;
+        }
+
+        public function addNewPrice(Request $request) {
+
+            $prices = json_decode($request['prices']);
+            $org_id =  $request->session()->get('org_id');
+
+            foreach($prices as $plastic => $price) {
+                $newPrice = new Price();
+                $newPrice->plastic = $plastic;
+                $newPrice->price = $price;
+                $newPrice->organization_id = $org_id;
+
+                $newPrice->save();
+
+            }
+            return $org_id;
+        }
+
         public function deleteOrganization($orgId) {
             Organization::find( $orgId )->delete();
             return \redirect(route('orgs'));
         }
 
-        public function showOrders($orgId) {
+        public function showOrders($orgId, Request $request) {
 
             $org = Organization::find($orgId);
-            $user = Auth::user();
+            $orgs = Auth::user()->organizations()->get();
             $orgs_id = [];
 
-            foreach ($user->organizations as $organization) {
+            foreach ($orgs as $organization) {
                 $orgs_id[] = $organization->id;
             }
 
             if(in_array(+$orgId, $orgs_id, true)) {
                 $orders = Order::where('organization_id', $orgId)->get();
 
+                $request->session()->put('role', 'executor');
                 return view('lk.orders', ['orders' => $orders, 'org' => $org, 'role' => 'executor']);
             }
             else {
@@ -150,9 +211,6 @@
                 $newPrice->save();
 
             }
-
-
-
             return true;
         }
     }

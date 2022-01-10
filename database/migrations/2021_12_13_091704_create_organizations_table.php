@@ -26,7 +26,7 @@ class CreateOrganizationsTable extends Migration
             $table->softDeletes();
             $table->char('description')->nullable();
             $table->char('email', 25)->nullable();
-            $table->char('phone_number', 11)->nullable();
+            $table->char('phone_number', 12)->nullable();
         });
     }
 

@@ -1,12 +1,12 @@
 <x-app-layout>
-    @section('title', 'Profile')
+    @section('title', 'Профиль')
     <div class="container my-5">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">{{Auth::user()->name}}</h4>
                 <h6 class="card-subtitle mb-2 text-muted">{{Auth::user()->email}}</h6>
-                <a href="#!" class="card-link">Сменить пароль</a>
-                <a href="#!" class="card-link">Удалить аккаунт</a>
+                <a href="/forgot-password" class="card-link">Сменить пароль</a>
+                <a href="/delete-account" class="card-link">Удалить аккаунт</a>
             </div>
         </div>
         <div class="d-flex justify-content-between my-5">

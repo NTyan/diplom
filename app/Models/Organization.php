@@ -19,6 +19,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $payment_account
  * @property string $deleted_at
  * @property User $user
+ * @property string $description
+ * @property string $email
+ * @property string $phone_number
  * @property Order[] $orders
  * @property Price[] $prices
  * @method static find($executor_id)
@@ -42,7 +45,7 @@ class Organization extends Model
     /**
      * @var array
      */
-    protected $fillable = ['user_id', 'name', 'type', 'jur_address', 'inn', 'kpp', 'ogrn', 'payment_account'];
+    protected $fillable = ['user_id', 'name', 'type', 'jur_address', 'inn', 'kpp', 'ogrn', 'payment_account', 'description', 'email', 'phone_number'];
 
     protected $dates = ['deleted_at'];
     /**
@@ -168,21 +171,39 @@ class Organization extends Model
         return $this->deleted_at;
     }
 
-    public function getUser(): User
+
+    public function getDescription(): string
     {
-        return $this->user;
+        return $this->description;
     }
 
-    public function getOrders(): array
+    public function setDescription(?string $description): Organization
     {
-        return $this->orders;
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): Organization
+    {
+        $this->email = $email;
+        return $this;
     }
 
 
-    public function getPrices(): array
+    public function getPhoneNumber(): string
     {
-        return $this->prices;
+        return $this->phone_number;
     }
 
+    public function setPhoneNumber(string $phone_number): Organization
+    {
+        $this->phone_number = $phone_number;
+        return $this;
+    }
 
 }
