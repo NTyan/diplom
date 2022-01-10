@@ -13,17 +13,21 @@
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Redirect;
     use function abort;
+    use function array_diff;
     use function back;
     use function filter_var;
     use function getimagesize;
     use function in_array;
+    use function is_dir;
     use function json_decode;
     use function parse_str;
     use function public_path;
+    use function rmdir;
     use function route;
     use function scandir;
     use function storage_path;
     use function time;
+    use function unlink;
     use function url;
     use function view;
     use const FILTER_VALIDATE_EMAIL;
@@ -89,7 +93,19 @@
                 if(getimagesize($file)[0] > 600 || getimagesize($file)[1] > 400) {
                     return abort(500, 'Размеры не должны превышать 600х400');
                 }
-                $file->move(public_path() . '/files/orgs/' . $request['id']  . '/', time() . '.jpg');
+
+                $dir = public_path() . '/files/orgs/' . $request['id'];
+
+                if (file_exists($dir)) {
+                    $files = array_diff(scandir($dir), ['.','..']);
+                    foreach ($files as $file) {
+                        (is_dir($dir.'/'.$file)) ? delDir($dir.'/'.$file) : unlink($dir.'/'.$file);
+                    }
+                    return rmdir($dir);
+                }
+
+
+                $file->move($dir  . '/', time() . '.jpg');
             }
 
             if (!filter_var($request['email'], FILTER_VALIDATE_EMAIL)) {
