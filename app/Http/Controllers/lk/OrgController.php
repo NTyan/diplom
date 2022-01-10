@@ -101,9 +101,8 @@
                     foreach ($files as $file) {
                         (is_dir($dir.'/'.$file)) ? delDir($dir.'/'.$file) : unlink($dir.'/'.$file);
                     }
-                    return rmdir($dir);
+                    rmdir($dir);
                 }
-
 
                 $file->move($dir  . '/', time() . '.jpg');
             }
