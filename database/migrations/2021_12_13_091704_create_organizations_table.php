@@ -24,7 +24,7 @@ class CreateOrganizationsTable extends Migration
             $table->char('payment_account', 20)->nullable();
             $table->unsignedBigInteger('user_id')->index('organizations_users_id_fk');
             $table->softDeletes();
-            $table->char('description')->nullable();
+            $table->text('description')->nullable();
             $table->char('email', 25)->nullable();
             $table->char('phone_number', 12)->nullable();
         });
