@@ -171,12 +171,16 @@
         $('#send').click(function () {
 
             $.each(form_data.getAll('file[]'), function (key, input) {
+                let count = +$('#stl_' + key).find('.count').val();
+                let volume = +$('#stl_' + key).find('.volume').text();
+                let filling = +$('#stl_' + key).find('.model_fill').val();
+
                 form_data.append('title[]', $('#stl_' + key).find('.title').val());
                 form_data.append('plastic[]', $('#stl_' + key).find('select').val());
                 form_data.append('color[]', $('#stl_' + key).find('.model_color').val().replace('#', ''));
-                form_data.append('filling[]', +$('#stl_' + key).find('.model_fill').val());
-                form_data.append('count[]', +$('#stl_' + key).find('.count').val());
-                form_data.append('weight[]', Math.round($('#stl_' + key).find('.volume').text() * density * $('#stl_' + key).find('.model_fill').val() / 100));
+                form_data.append('filling[]', filling);
+                form_data.append('count[]', count);
+                form_data.append('weight[]', Math.round(volume * density * filling * count / 100));
             });
             form_data.append('date', $('.date').val());
             form_data.append('comment', $('.comment').val());
@@ -194,7 +198,7 @@
 
                     if (mes.status !== 200) {
 
-                        alert("Ошибка");
+                        alert(mes.responseText);
                         return 0;
                     }
 

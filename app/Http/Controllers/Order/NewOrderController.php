@@ -79,7 +79,7 @@
 
         public function addExecutorToNewOrder(Request $request) :string {
 
-            $orgs = []; $path = [];
+            $orgs = []; $path = []; $xprices = [];
 
             if ($request->session()->has('order_id'))
                 $order_id = $request->session()->get('order_id');
@@ -118,9 +118,12 @@
                 else {
                     $path[$org->id] = "/files/orgs/" . $org->id . "/" . $name;
                 }
+                foreach ($org->prices as $price) {
+                    $xprices[$org->id][] = $price->price;
+                }
             }
 
-            return view('order.executors', ['orgs' => $orgs, 'path' => $path]);
+            return view('order.executors', ['orgs' => $orgs, 'path' => $path, 'prices' => $xprices]);
         }
 
         /**

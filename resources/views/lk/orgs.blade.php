@@ -53,7 +53,7 @@
 
         </main>
     </div>
-    {{--    модальное окно редактирования личных данных--}}
+    {{--    модальное окно личных данных--}}
     <div class="modal fade modal-data "  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content p-3">
@@ -121,7 +121,7 @@
 
     </div>
 
-    {{--    модальное окно редактирования цен --}}
+    {{--    модальное окно цен --}}
     <div class="modal fade modal-prices "  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content p-3">

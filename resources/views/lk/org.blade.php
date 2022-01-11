@@ -135,7 +135,7 @@
                         @foreach($prices as $price)
                             <tr>
                                 <td><input class="form-control plastic update-plastic"  value="{{$price->plastic}}" disabled></td>
-                                <td><input class="form-control price update-price"  value="{{$price->price}}"></td>
+                                <td><input class="form-control price update-price"  value="{{$price->price}}"></td>  number_format($model->price,0,'.',' ')
                                 <td><div class="btn delete-plastic" title="Удалить"><i class="bi bi-trash-fill text-black-50"></i></div></td>
                             </tr>
                         @endforeach
@@ -195,8 +195,12 @@
         });
 
         $(".edit-info").on('click', function () {
+
+            $('.alert-danger').attr("hidden",true);
+
             var id = $(this).data('id');
             var form_data = new FormData($('#info')[0]);
+
             form_data.append('id', id);
 
             $.ajax({
@@ -223,6 +227,8 @@
         });
         $(".edit-price").on('click', function () {
 
+            $('.alert-danger').attr("hidden",true);
+
             let org_id = $(this).data("id");
             const $pricesAndPlastic = {};
 
@@ -246,7 +252,8 @@
                 complete: function (mes) {
 
                     if (mes.status !== 200) {
-                        alert('error');
+                        $('#error').html(mes.responseJSON.message + '<br>');
+                        $('.alert-danger').removeAttr('hidden');
                         return 0;
                     }
 

@@ -17,13 +17,19 @@
                                 </div>
                                 <div class="card-body">
                                     <h4>{{$org->name}}</h4>
-                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
                                             <a href="/organization/{{$org->id}}" class="btn btn-sm btn-outline-secondary">Просмотр</a>
                                             <a href="/executor/{{$org->id}}" class="btn btn-sm btn-outline-primary">Выбрать</a>
                                         </div>
-                                        <small class="text-muted">Рейтинг</small>
+                                        <small class="text-muted">
+                                            @isset($prices[$org->id])
+                                                Цены от <b>{{min(($prices[$org->id]))}}</b>р./г.
+                                            @endisset
+                                            @empty($prices[$org->id])
+                                                Цены не указаны
+                                            @endempty
+                                        </small>
                                     </div>
                                 </div>
                             </div>

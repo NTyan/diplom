@@ -53,17 +53,19 @@
                                 <th scope="row">{{$key +1}}</th>
                                 <td>
                                     <dt>Размеры</dt>
-                                    <dd>{{$model->width}}х{{$model->height}}х{{$model->length}}</dd>
+                                    <dd>{{$model->width}} мм. х {{$model->height}} мм. х {{$model->length}} мм.</dd>
 
                                     <dt>Объем</dt>
-                                    <dd>{{$model->volume}}</dd>
+                                    <dd>{{$model->volume}} мм. куб</dd>
 
                                     <dt>Вес</dt>
-                                    <dd>{{$model->weight}}</dd>
+                                    <dd>{{$model->weight}} г.</dd>
                                 </td>
                                 <td>
                                     <dt>Цвет</dt>
-                                    <dd>{{$model->color}}</dd>
+                                    <dd>
+                                        <input type="color" value="{{$model->color}}" disabled>
+                                    </dd>
                                 </td>
                                 <td>
                                     <dt>Пластик</dt>
@@ -71,11 +73,11 @@
                                 </td>
                                 <td>
                                     <dt>Количество</dt>
-                                    <dd>{{$model->count}}</dd>
+                                    <dd>{{$model->count}} шт.</dd>
                                 </td>
                                 <td>
                                     <dt>Цена</dt>
-                                    <dd> {{$model->price}}</dd>
+                                    <dd> {{number_format($model->price,0,'.',' ')}}р.</dd>
                                 </td>
                                 <td class="remove">
                                     <a href="/file/{{$order->id}}/{{$model->id}}"><i class="bi bi-file-earmark-arrow-down"></i></a>
@@ -88,10 +90,10 @@
                 <li class="list-group-item font-weight-bold">
                     <div class="d-flex flex-row">
                         <div>
-                            Сумма: {{$order->sum}} р.
-                            @if(!$order->is_paid && $role === "customer")
+                            Сумма: {{number_format($order->sum,0,'.',' ')}}р.
+                            @if(!$order->is_paid && $role === "customer" && $order->status !== 'canceled')
                                 <a href="#" class="card-link remove">Оплатить</a>
-                            @elseif(!$order->is_paid && $role === "executor")
+                            @elseif((!$order->is_paid && $role === "executor") || (!$order->is_paid && $role === "customer" && $order->status === 'canceled'))
                                 <p class="text-danger">Неоплачено</p>
                             @else
                                 <p class="text-success">Оплачено</p>
