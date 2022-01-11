@@ -151,7 +151,7 @@
             foreach ($models as $model) {
                 foreach ($plastic as $pl => $price) {
                     if($model->plastic === $pl) {
-                        $model->price = ceil($model->weight * $price * $model->count);
+                        $model->price = ceil($model->weight * $price);
                         $model->save();
                         $sum += $model->price;
                     }
