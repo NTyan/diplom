@@ -242,6 +242,8 @@
 
             $("#new-price").on('click', function () {
 
+                $('.alert-danger').attr("hidden",true);
+
                 const $pricesAndPlastic = {};
 
                 let $plastics = $('.update-plastic');
@@ -263,7 +265,8 @@
                     complete: function (mes) {
 
                         if (mes.status !== 200) {
-                            alert('error');
+                            $('#error').html(mes.responseJSON.message + '<br>');
+                            $('.alert-danger').removeAttr('hidden');
                             return 0;
                         }
 
