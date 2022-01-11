@@ -65,7 +65,7 @@
                     <h1 class="display-5 fw-bolder text-white mb-2">Аддитивные технологии теперь доступны каждому</h1>
                     <p class="lead text-white-50 mb-4">Данный сервис является площадкой для размещения мощностей 3D печати и предоставлению услуг по взаимодействию с клиентами</p>
                     <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="/new-order">Начать</a>
+                        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{{route('showPage')}}">Начать</a>
                         <a class="btn btn-outline-light btn-lg px-4" href="#features">Подробнее</a>
                     </div>
                 </div>
