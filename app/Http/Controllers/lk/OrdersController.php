@@ -37,6 +37,7 @@
             $order = Order::where('id', $id)
                 ->with('orderModels')
                 ->with('organization')
+                ->with('user')
                 ->first();
 
             $user = Auth::user();
@@ -56,7 +57,7 @@
                         $name = $org->name;
                     }
                     elseif($role === "executor") {
-                        $name = $user->name;
+                        $name = $order->user->name;
                     }
 
                     return view('lk.order',

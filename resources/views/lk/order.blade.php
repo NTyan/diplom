@@ -64,7 +64,7 @@
                                 <td>
                                     <dt>Цвет</dt>
                                     <dd>
-                                        <input type="color" value="{{$model->color}}" disabled>
+                                        <input type="color" value="#{{$model->color}}" disabled>
                                     </dd>
                                 </td>
                                 <td>
@@ -312,7 +312,7 @@
                     // после получения ответа сервера
                     complete: function (mes) {
                         if (mes.status !== 200) {
-                            alert("Ошибка");
+                            console.log(mes.responseText);
                             return 0;
                         }
                         let messages = mes.responseJSON['messages'];
@@ -322,11 +322,15 @@
 
                         $('#chat-content').empty();
 
+                        if(role === 'executor')
+                            $('#org_img').attr("src", img);
+
                         for(let i = 0; i < messages.length; i++) {
 
                             let add;
 
                             if (role === 'customer' ) {
+
                                 if (messages[i].sender_id === customer_id) {
                                     add = ' <div class="media media-chat media-chat-reverse">'
                                         + '<div class="media-body">'
@@ -343,8 +347,6 @@
                                 }
                             }
                             else {
-
-                                $('#org_img').attr("src", img);
 
                                 if (messages[i].sender_id === org_id) {
                                     add = ' <div class="media media-chat media-chat-reverse">'
@@ -370,6 +372,7 @@
             }
 
             show();
+
             timerId = setInterval( function () {
                 show();
             }, 10000);
