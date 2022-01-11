@@ -14,6 +14,7 @@
                         <p class="lead text-muted">На этой странице вы можете посмотреть свои заказы</p>
                         <p>
                             <a href="{{url('/show-page')}}" class="btn btn-primary my-2">Создать заказ</a>
+                            <a href="#" class="btn btn-secondary my-2">Secondary action</a>
                         </p>
                     @endempty
                 </div>
