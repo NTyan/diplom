@@ -69,7 +69,7 @@
                     </div>
                     <div class="form-group">
                         <label for="phone">Телефон</label>
-                        <input type="text" name="phone" class="form-control" id="phone" value="{{$org->phone_number}}">
+                        <input type="text" name="phone" class="form-control" id="phone" maxlength="11" value="{{$org->phone_number}}">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
@@ -81,19 +81,19 @@
                     </div>
                     <div class="form-group">
                         <label for="inn">ИНН</label>
-                        <input type="text" name="inn" class="form-control" id="inn" value="{{$org->inn}}">
+                        <input type="text" name="inn" class="form-control" id="inn" value="{{$org->inn}}" minlength="12" maxlength="12">
                     </div>
                     <div class="form-group">
                         <label for="kpp">КПП</label>
-                        <input type="text" name="kpp" class="form-control" id="kpp" value="{{$org->kpp}}">
+                        <input type="text" name="kpp" class="form-control" id="kpp" value="{{$org->kpp}}" minlength="9" maxlength="9">
                     </div>
                     <div class="form-group">
                         <label for="ogrn">ОГРН</label>
-                        <input type="text" name="ogrn" class="form-control" id="ogrn" value="{{$org->ogrn}}">
+                        <input type="text" name="ogrn" class="form-control" id="ogrn" value="{{$org->ogrn}}" minlength="13" maxlength="13">
                     </div>
                     <div class="form-group">
                         <label for="payment">Рассчетный счет</label>
-                        <input type="text" name="payment" class="form-control" id="payment" value="{{$org->payment_account}}">
+                        <input type="text" name="payment" class="form-control" id="payment" value="{{$org->payment_account}}" minlength="20" maxlength="20">
                     </div>
                     <div class="form-group">
                         <label for="description">Описание</label>

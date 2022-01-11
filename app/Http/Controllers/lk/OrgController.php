@@ -87,7 +87,7 @@
             $file = $request->file('file');
 
             if($file !== null) {
-                if($file->getMimeType() !== 'image/jpeg' || $file->getMimeType() !== 'image/png') {
+                if($file->getMimeType() !== 'image/jpeg' && $file->getMimeType() !== 'image/png') {
                     return abort(500, 'Тип изображения не поддерживается');
                 }
                 if(getimagesize($file)[0] > 600 || getimagesize($file)[1] > 400) {
