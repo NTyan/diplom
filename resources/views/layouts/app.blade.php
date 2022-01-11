@@ -49,7 +49,7 @@
                     <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
                         <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
                     </a>
-                    <p class="text-muted">© 2021</p>
+                    <p class="text-muted">3DPlace © 2022</p>
                 </div>
 
                 <div class="col">
@@ -57,38 +57,41 @@
                 </div>
 
                 <div class="col">
-                    <h5>Section</h5>
+                    <h5>Навигация</h5>
                     <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+                        <li class="nav-item mb-2"><a href="{{route('home')}}" class="nav-link p-0 text-muted">Главная</a></li>
+                        <li class="nav-item mb-2"><a href="{{route('showPage')}}" class="nav-link p-0 text-muted">Создать заказ</a></li>
+                        <li class="nav-item mb-2"><a href="{{route('orders')}}" class="nav-link p-0 text-muted">Мои заказы</a></li>
+                        <li class="nav-item mb-2"><a href="{{route('orgs')}}" class="nav-link p-0 text-muted">Мои организации</a></li>
                         <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted" data-toggle="modal" data-target=".modal-info">О сервисе</a></li>
                     </ul>
                 </div>
 
                 <div class="col">
-                    <h5>Section</h5>
+                    <h5>Контакты</h5>
                     <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
-                    </ul>
-                </div>
-
-                <div class="col">
-                    <h5>Section</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                        <li class="nav-item mb-2">Email: <a href="#" class="nav-link p-0 text-muted">service@3dplace.ru</a></li>
+                        <li class="nav-item mb-2">Поддержка: <a href="#" class="nav-link p-0 text-muted">t.me/3dplace</a></li>
                     </ul>
                 </div>
             </footer>
         </div>
     </body>
+
+    {{-- модальное окно  --}}
+    <div class="modal fade modal-info " id="modal_hide" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content p-3 text-center">
+                <p>Проект разработан в рамках Выпускной квалификационной работы</p>
+                <p>студентки группы 18ИСТв1</p>
+                <p>Лариновой Ольги</p>
+            </div>
+        </div>
+
+    </div>
+
 </html>
+<script>
+
+</script>
