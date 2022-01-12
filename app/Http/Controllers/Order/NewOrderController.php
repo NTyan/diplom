@@ -2,7 +2,6 @@
 
     namespace App\Http\Controllers\Order;
 
-    use App\Mail\OrderCreate;
     use App\Models\Order;
     use App\Models\OrderModel;
     use App\Models\Organization;
@@ -11,7 +10,6 @@
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\DB;
-    use Illuminate\Support\Facades\Mail;
     use Symfony\Component\HttpFoundation\Response;
     use function abort;
     use function array_unique;
@@ -164,14 +162,6 @@
             $order->save();
 
             $request->session()->put('role', 'customer');
-
-            try {
-                foreach ([$request->user(), $org->user] as $recipient) {
-                    Mail::to($recipient)->queue(new OrderCreate($order));
-                }
-            } catch (Exception $exception) {
-                abort('404', $exception->getMessage());
-            }
 
             return redirect(url('/orders/' . $order->id));
         }
