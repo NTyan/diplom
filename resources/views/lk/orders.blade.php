@@ -75,7 +75,7 @@
                                 @else
                                     <i class="bi bi-credit-card-2-front-fill text-danger"></i>
                                 @endif
-                                {{number_format($order->sum)}}р.
+                                {{number_format($order->sum,0,',',' ')}}р.
                             </td>
                         </tr>
                 @endforeach
