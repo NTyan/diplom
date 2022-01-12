@@ -3,21 +3,14 @@
     namespace App\Http\Controllers\lk;
 
     use App\Http\Controllers\Controller;
-    use App\Mail\OrderCanceled;
-    use App\Mail\OrderCompleted;
-    use App\Mail\OrderCreate;
-    use App\Mail\OrderPaid;
-    use App\Mail\OrderTransit;
     use App\Models\Order;
     use App\Models\OrderModel;
     use App\Models\User;
     use Exception;
-    use Illuminate\Support\Facades\Mail;
     use Illuminate\Support\Facades\Storage;
     use Reliese\Coders\Model\Model;
     use Symfony\Component\HttpFoundation\Request;
     use Illuminate\Support\Facades\Auth;
-    use function abort;
     use function array_diff;
     use function array_push;
     use function file_exists;
@@ -84,13 +77,7 @@
         public function changeOrderStatusPaid(Request $request) {
             try {
                 $orderId = $request['order_id'];
-                $order = Order::find($orderId);
-                $order->setIsPaid(true)->setStatusConfirmed()->save();
-
-                foreach ([$request->user(), $order->user] as $recipient) {
-                    Mail::to($recipient)->queue(new OrderPaid($order));
-                }
-
+                Order::find($orderId)->setIsPaid(true)->setStatusConfirmed()->save();
 
             } catch (Exception $exception) {
                 return new Exception($exception->getMessage());
@@ -100,17 +87,11 @@
 
         public function changeOrderStatusCanceled(Request $request) {
             try {
-
                 $orderId = $request['order_id'];
-                $order = Order::find($orderId);
-                $order->setStatusCanceled()->save();
-
-                foreach ([$request->user(), $order->organization->user] as $recipient) {
-                    Mail::to($recipient)->queue(new OrderCanceled($order));
-                }
+                Order::find($orderId)->setStatusCanceled()->save();
 
             } catch (Exception $exception) {
-                abort('404', $exception->getMessage());
+                return new Exception($exception->getMessage());
             }
             return true;
         }
@@ -118,12 +99,7 @@
         public function changeOrderStatusTransit(Request $request) {
             try {
                 $orderId = $request['order_id'];
-                $order = Order::find($orderId);
-                $order->setStatusTransit()->save();
-
-                foreach ([$request->user(), $order->user] as $recipient) {
-                    Mail::to($recipient)->queue(new OrderTransit($order));
-                }
+                Order::find($orderId)->setStatusTransit()->save();
 
             } catch (Exception $exception) {
                 return new Exception($exception->getMessage());
@@ -134,12 +110,7 @@
         public function changeOrderStatusCompleted(Request $request) {
             try {
                 $orderId = $request['order_id'];
-                $order = Order::find($orderId);
-                $order->setStatusCompleted()->save();
-
-                foreach ([$request->user(), $order->organization->user] as $recipient) {
-                    Mail::to($recipient)->queue(new OrderCompleted($order));
-                }
+                Order::find($orderId)->setStatusCompleted()->save();
 
             } catch (Exception $exception) {
                 return new Exception($exception->getMessage());
