@@ -40,7 +40,8 @@
             let files = $("#file")[0].files;
 
             for (let i=0; i<files.length; i++) {
-                if( files[i].type !== "model/stl" ){
+
+                if( files[i].name.split('.').pop() !== "stl" ){
                     $('#error').html('Файлы должны быть типа stl<br>');
                     $('.alert-danger').removeAttr('hidden');
                     return 0;

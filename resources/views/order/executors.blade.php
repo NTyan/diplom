@@ -2,7 +2,13 @@
     @section('title', 'Исполнители')
     <div class="container my-5">
         <main role="main">
+            <section class="jumbotron text-center">
+                <div class="container">
+                    <h1 class="jumbotron-heading">Выбор исполнителя</h1>
+                    <p class="lead text-muted">Выберите исполнителя для своего заказа, нажав на кнопку "выбрать". Пожалуйста, не покидайте страницу!</p>
 
+                </div>
+            </section>
             <div class="album py-5 bg-light">
                 <div class="container">
                     <div class="row">

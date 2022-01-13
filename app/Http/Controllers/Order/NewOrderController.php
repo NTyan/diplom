@@ -170,7 +170,7 @@
                     Mail::to($recipient)->queue(new OrderCreate($order));
                 }
             } catch (Exception $exception) {
-                abort('404', $exception->getMessage());
+
             }
 
             return redirect(url('/orders/' . $order->id));
