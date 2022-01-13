@@ -2,6 +2,7 @@
 
     namespace App\Http\Controllers\Order;
 
+    use App\Http\Controllers\Controller;
     use App\Mail\OrderCreate;
     use App\Models\Order;
     use App\Models\OrderModel;
@@ -28,7 +29,7 @@
     use function url;
     use function view;
 
-    class NewOrderController
+    class NewOrderController extends Controller
     {
         public function showPage() {
 

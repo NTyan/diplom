@@ -2,6 +2,7 @@
 
     namespace App\Http\Controllers\lk;
 
+    use App\Http\Controllers\Controller;
     use App\Models\Message;
     use App\Models\Order;
     use App\Models\Organization;
@@ -10,7 +11,7 @@
     use function public_path;
     use function scandir;
 
-    class ChatController
+    class ChatController extends Controller
     {
         public function getMessages(Request $request) {
 
