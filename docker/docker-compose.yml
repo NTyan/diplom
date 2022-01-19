@@ -40,6 +40,7 @@ services:
             - mysql
         networks:
             - backend
+        command: sh -c "nohup php artisan queue:work --daemon"
     nodejs:
         image: wiwatsrt/docker-laravel-nodejs
         volumes:
