@@ -14,11 +14,11 @@
 |
 */
 
-Route::get('/', [HomeController::class, 'show'])->name('home');;
+Route::get('/', [HomeController::class, 'show'])->name('home')->middleware('delete.orders');
 
 Route::get('/profile', function () {
     return view('lk.profile');
-})->middleware('auth')->name('profile');
+})->middleware(['auth', 'delete.orders'])->name('profile');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/lk.php';
