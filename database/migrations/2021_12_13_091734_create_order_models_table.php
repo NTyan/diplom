@@ -24,7 +24,7 @@ class CreateOrderModelsTable extends Migration
             $table->unsignedBigInteger('order_id')->nullable()->index('order_models_orders_id_fk');
             $table->integer('count')->nullable();
             $table->integer('price')->nullable();
-            $table->char('title', 30)->nullable();
+            $table->char('title', 50)->nullable();
             $table->integer('length')->nullable();
         });
     }

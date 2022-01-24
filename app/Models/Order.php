@@ -197,27 +197,6 @@ class Order extends Model
         return $this->user;
     }
 
-    public function getOrganization(): Organization
-    {
-        return $this->organization;
-    }
-
-    public function setOrganization(Organization $organization): Order
-    {
-        $this->organization = $organization;
-        return $this;
-    }
-
-    public function getOrderModels(): array
-    {
-        return $this->orderModels;
-    }
-
-    public function setOrderModels(array $orderModels): Order
-    {
-        $this->orderModels = $orderModels;
-        return $this;
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

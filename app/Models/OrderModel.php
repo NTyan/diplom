@@ -193,11 +193,5 @@ class OrderModel extends Model
         return $this;
     }
 
-    public function getOrder(): Order
-    {
-        return $this->order;
-    }
-
-
 
 }
