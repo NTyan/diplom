@@ -10,6 +10,9 @@
             <div class="alert alert-danger my-2" role="alert" hidden>
                 <strong id="error"></strong>
             </div>
+            <div class="progress pb" hidden>
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" id="pb"></div>
+            </div>
             <div id="stl_cont" ></div>
             <dl class="hidden_el" hidden>
                 <dt>Желаемая дата готовности</dt>
@@ -24,7 +27,7 @@
     <script src="{{ asset('js/viewstl/build/stl_viewer.min.js') }}"></script>
 </x-app-layout>
 
-<script>
+<script >
 
 
     $(document).ready(function () {
@@ -33,10 +36,28 @@
         let form_data = new FormData();
         let density = 0.00124;
 
+        function load_prog(load_status, load_session)
+        {
+            //go over all models that are/were loaded
+            Object.keys(load_status).forEach(function(model_id)
+            {
+                if (load_status[model_id].load_session==load_session) //need to make sure we're on the last loading session (not counting previous loaded models)
+                {
+                    $("#pb").css({ width:'0%'});
+                    $('.pb').removeAttr('hidden');
+                    //set the relevant model's progress bar
+                    var loaded = Math.round(load_status[model_id].loaded/load_status[model_id].total*100);
+                    $("#pb").css({ width: loaded.toString() + '%' });
+                }
+
+            });
+
+        }
+
         $("#file").change(function() {
 
-
             $('.alert-danger').prop("hidden", !this.checked);
+
             let files = $("#file")[0].files;
 
             for (let i=0; i<files.length; i++) {
@@ -48,7 +69,6 @@
                 }
 
             }
-
 
             $('#add_files').text('Добавить файл');
             $('.hidden_el').removeAttr('hidden');
@@ -69,7 +89,9 @@
                 let model = new StlViewer(
                     document.querySelector('#stl_' + id + ' .center'),
                     {
+                        loading_progress_callback:load_prog,
                         model_loaded_callback: function () {
+                            $('.pb').prop("hidden", !this.checked);
 
                             let model_info = model.get_model_info(key);
 
