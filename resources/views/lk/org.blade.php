@@ -135,7 +135,7 @@
                         @foreach($prices as $price)
                             <tr>
                                 <td><input class="form-control plastic update-plastic"  value="{{$price->plastic}}" disabled></td>
-                                <td><input class="form-control price update-price"  value="{{$price->price}}"></td>  number_format($model->price,0,'.',' ')
+                                <td><input class="form-control price update-price"  value="{{$price->price}}"></td> 
                                 <td><div class="btn delete-plastic" title="Удалить"><i class="bi bi-trash-fill text-black-50"></i></div></td>
                             </tr>
                         @endforeach
